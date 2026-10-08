@@ -1,0 +1,486 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- ✏️ Edit: page title + description (used by Google and link previews) -->
+  <title>Your Name — IT Specialist</title>
+  <meta name="description" content="Portfolio and resume of Your Name — IT specialist focused on infrastructure, cloud, networking and automation.">
+  <meta property="og:title" content="Your Name — IT Specialist">
+  <meta property="og:description" content="Infrastructure, cloud, networking and automation. Resume, projects and contact.">
+  <meta property="og:type" content="website">
+  <meta name="theme-color" content="#0b0d12" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#f7f7f4" media="(prefers-color-scheme: light)">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%235b5bf7'/%3E%3Ctext x='50%25' y='54%25' text-anchor='middle' dominant-baseline='middle' font-family='monospace' font-size='30' font-weight='700' fill='white'%3EYN%3C/text%3E%3C/svg%3E">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+
+  <!-- Apply saved theme before paint to avoid a flash -->
+  <script>
+    try { const t = localStorage.getItem('theme'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+  </script>
+</head>
+<body>
+  <div class="grain" aria-hidden="true"></div>
+  <div class="spotlight" aria-hidden="true"></div>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- ========== NAV ========== -->
+  <header class="nav" id="top">
+    <div class="container nav__inner">
+      <a href="#top" class="brand" aria-label="Home">
+        <span class="brand__mark">YN</span>
+        <span class="brand__name">Your Name</span>
+      </a>
+
+      <nav class="nav__links" id="nav-links" aria-label="Primary">
+        <a href="#about">About</a>
+        <a href="#skills">Skills</a>
+        <a href="#experience">Experience</a>
+        <a href="#projects">Projects</a>
+        <a href="#certs">Certifications</a>
+        <a href="#contact">Contact</a>
+      </nav>
+
+      <div class="nav__actions">
+        <button class="icon-btn" id="theme-toggle" aria-label="Toggle color theme" title="Toggle theme">
+          <svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+          <svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+        </button>
+        <!-- ✏️ To link a PDF instead: <a class="btn ..." href="resume.pdf" download> -->
+        <button class="btn btn--primary btn--sm nav__cta" id="print-resume" type="button" title="Print or save this page as a PDF resume">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0l-5-5m5 5l5-5M5 21h14"/></svg>
+          Resume
+        </button>
+        <button class="icon-btn nav__burger" id="nav-burger" aria-label="Open menu" aria-expanded="false" aria-controls="nav-links">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        </button>
+      </div>
+    </div>
+    <div class="scroll-progress" aria-hidden="true"><span id="scroll-progress"></span></div>
+  </header>
+
+  <main id="main">
+    <!-- ========== HERO ========== -->
+    <section class="hero">
+      <div class="hero__bg" aria-hidden="true"></div>
+      <div class="container hero__grid">
+        <div class="hero__copy">
+          <p class="status-pill reveal">
+            <span class="status-dot"></span> Available for new opportunities
+          </p>
+          <h1 class="hero__title reveal">
+            Hi, I'm <span class="grad">Your Name</span>.<br>
+            I keep systems <span class="typed" id="typed" data-words='["running.","secure.","scalable.","automated."]'>running.</span>
+          </h1>
+          <p class="hero__lead reveal">
+            IT Specialist with <strong>5+ years</strong> designing, supporting and automating
+            infrastructure — from help desk to cloud. I turn messy IT environments into
+            reliable, well-documented systems people actually enjoy using.
+          </p>
+          <div class="hero__ctas reveal">
+            <a class="btn btn--primary" href="#projects">
+              View my work
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-6-6l6 6-6 6"/></svg>
+            </a>
+            <a class="btn btn--ghost" href="#contact">Get in touch</a>
+          </div>
+          <ul class="hero__meta reveal">
+            <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg> Your City, Country</li>
+            <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5h18v14H3z"/><path d="M3 6l9 7 9-7"/></svg> <a href="mailto:you@example.com">you@example.com</a></li>
+          </ul>
+        </div>
+
+        <!-- Terminal card with orbit graphic -->
+        <div class="hero__visual">
+        <div class="orbit" aria-hidden="true">
+          <span class="orbit__ring orbit__ring--1"><i class="chip">☁ Azure</i></span>
+          <span class="orbit__ring orbit__ring--2"><i class="chip">⚡ PowerShell</i></span>
+          <span class="orbit__ring orbit__ring--3"><i class="chip">🛡 Security</i></span>
+        </div>
+        <div class="terminal reveal tilt" aria-label="Quick profile summary">
+          <div class="terminal__bar">
+            <span></span><span></span><span></span>
+            <p>~/whoami</p>
+          </div>
+          <pre class="terminal__body"><code><span class="t-prompt">$</span> whoami
+<span class="t-out">your-name — IT Specialist</span>
+<span class="t-prompt">$</span> cat focus.txt
+<span class="t-key">infra   </span> Windows / Linux / AD
+<span class="t-key">cloud   </span> Azure · AWS · M365
+<span class="t-key">network </span> VLAN · VPN · Firewall
+<span class="t-key">automate</span> PowerShell · Python
+<span class="t-prompt">$</span> uptime
+<span class="t-ok">99.9% — and counting</span><span class="cursor">▍</span></code></pre>
+        </div>
+        </div>
+      </div>
+
+      <!-- Stats -->
+      <div class="container">
+        <dl class="stats reveal">
+          <div><dt>Years experience</dt><dd><span class="count" data-to="5">0</span>+</dd></div>
+          <div><dt>Users supported</dt><dd><span class="count" data-to="800">0</span>+</dd></div>
+          <div><dt>Projects delivered</dt><dd><span class="count" data-to="40">0</span>+</dd></div>
+          <div><dt>Certifications</dt><dd><span class="count" data-to="6">0</span></dd></div>
+        </dl>
+      </div>
+    </section>
+
+    <!-- ========== TECH MARQUEE ========== -->
+    <div class="marquee" aria-label="Technologies I work with">
+      <div class="marquee__track">
+        <ul>
+          <li>Windows Server</li><li>✦</li><li>Microsoft 365</li><li>✦</li><li>Azure</li><li>✦</li><li>AWS</li><li>✦</li><li>Linux</li><li>✦</li><li>PowerShell</li><li>✦</li><li>Python</li><li>✦</li><li>Intune</li><li>✦</li><li>Cisco</li><li>✦</li><li>VMware</li><li>✦</li>
+        </ul>
+        <ul aria-hidden="true">
+          <li>Windows Server</li><li>✦</li><li>Microsoft 365</li><li>✦</li><li>Azure</li><li>✦</li><li>AWS</li><li>✦</li><li>Linux</li><li>✦</li><li>PowerShell</li><li>✦</li><li>Python</li><li>✦</li><li>Intune</li><li>✦</li><li>Cisco</li><li>✦</li><li>VMware</li><li>✦</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ========== ABOUT ========== -->
+    <section class="section" id="about">
+      <div class="container">
+        <header class="section__head reveal">
+          <p class="eyebrow">01 — About</p>
+          <h2>A problem-solver who documents the fix.</h2>
+        </header>
+
+        <div class="bento">
+          <article class="card bento__main reveal">
+            <div class="avatar" aria-hidden="true">
+              <!-- ✏️ Replace with <img src="photo.jpg" alt="Your Name"> -->
+              <span>YN</span>
+            </div>
+            <p>
+              I started out fixing printers and resetting passwords — and fell in love with
+              figuring out <em>why</em> things break. Today I manage hybrid infrastructure,
+              lead migrations, and write the scripts that make repetitive work disappear.
+            </p>
+            <p>
+              I care about clear communication, calm incident response, and leaving every
+              system better documented than I found it.
+            </p>
+          </article>
+
+          <article class="card reveal">
+            <h3 class="card__title">What I'm good at</h3>
+            <ul class="checklist">
+              <li>Troubleshooting under pressure</li>
+              <li>Automating the boring stuff</li>
+              <li>Explaining tech to non-tech people</li>
+              <li>Writing runbooks people use</li>
+            </ul>
+          </article>
+
+          <article class="card reveal">
+            <h3 class="card__title">Languages</h3>
+            <ul class="lang">
+              <li><span>English</span><span class="lang__lvl">Professional</span></li>
+              <li><span>Vietnamese</span><span class="lang__lvl">Native</span></li>
+              <li><span>Japanese</span><span class="lang__lvl">Conversational</span></li>
+            </ul>
+          </article>
+
+          <article class="card card--accent reveal">
+            <p class="quote">“Good IT is invisible — people only notice it when it's gone.”</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== SKILLS ========== -->
+    <section class="section section--alt" id="skills">
+      <div class="container">
+        <header class="section__head reveal">
+          <p class="eyebrow">02 — Skills</p>
+          <h2>Toolbox</h2>
+          <p class="section__sub">The tech I use day to day, grouped by area.</p>
+        </header>
+
+        <div class="skills">
+          <article class="skill-card reveal">
+            <div class="skill-card__icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="6" rx="1.5"/><rect x="3" y="14" width="18" height="6" rx="1.5"/><path d="M7 7h.01M7 17h.01"/></svg></div>
+            <h3>Systems</h3>
+            <ul class="tags">
+              <li>Windows Server</li><li>Active Directory</li><li>Group Policy</li><li>Linux (Ubuntu/RHEL)</li><li>VMware</li><li>Hyper-V</li>
+            </ul>
+          </article>
+          <article class="skill-card reveal">
+            <div class="skill-card__icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 18a4 4 0 0 1-.7-7.9A6 6 0 0 1 18 9a4.5 4.5 0 0 1-.5 9z"/></svg></div>
+            <h3>Cloud &amp; SaaS</h3>
+            <ul class="tags">
+              <li>Microsoft 365</li><li>Entra ID</li><li>Intune</li><li>Azure</li><li>AWS</li><li>Google Workspace</li>
+            </ul>
+          </article>
+          <article class="skill-card reveal">
+            <div class="skill-card__icon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="5" r="2"/><circle cx="5" cy="19" r="2"/><circle cx="19" cy="19" r="2"/><path d="M12 7v5M12 12l-6 5M12 12l6 5"/></svg></div>
+            <h3>Networking</h3>
+            <ul class="tags">
+              <li>TCP/IP</li><li>VLANs</li><li>VPN</li><li>Firewalls</li><li>DNS / DHCP</li><li>Wi-Fi</li>
+            </ul>
+          </article>
+          <article class="skill-card reveal">
+            <div class="skill-card__icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 9l-4 3 4 3M16 9l4 3-4 3M14 5l-4 14"/></svg></div>
+            <h3>Automation</h3>
+            <ul class="tags">
+              <li>PowerShell</li><li>Python</li><li>Bash</li><li>Git</li><li>Ansible</li><li>REST APIs</li>
+            </ul>
+          </article>
+          <article class="skill-card reveal">
+            <div class="skill-card__icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l8 3v6c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V6z"/><path d="M9 12l2 2 4-4"/></svg></div>
+            <h3>Security</h3>
+            <ul class="tags">
+              <li>MFA / Conditional Access</li><li>Endpoint protection</li><li>Patching</li><li>Backup &amp; DR</li><li>Least privilege</li>
+            </ul>
+          </article>
+          <article class="skill-card reveal">
+            <div class="skill-card__icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19V5M4 19h16M8 15l3-4 3 2 5-6"/></svg></div>
+            <h3>Ops &amp; Support</h3>
+            <ul class="tags">
+              <li>ITIL</li><li>Ticketing (Jira / ServiceNow)</li><li>Monitoring</li><li>Asset mgmt</li><li>Documentation</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== EXPERIENCE ========== -->
+    <section class="section" id="experience">
+      <div class="container">
+        <header class="section__head reveal">
+          <p class="eyebrow">03 — Experience</p>
+          <h2>Where I've worked</h2>
+        </header>
+
+        <ol class="timeline">
+          <li class="timeline__item reveal">
+            <div class="timeline__when">2023 — Present</div>
+            <div class="timeline__card card">
+              <div class="timeline__top">
+                <h3>IT Infrastructure Specialist</h3>
+                <span class="timeline__org">Company Name · City</span>
+              </div>
+              <ul class="bullets">
+                <li>Led migration of <strong>300+ users</strong> from on-prem Exchange to Microsoft 365 with zero data loss.</li>
+                <li>Rolled out Intune device management, cutting new-laptop setup time from 3 hours to <strong>25 minutes</strong>.</li>
+                <li>Built PowerShell automation for onboarding/offboarding, saving ~<strong>10 hours/week</strong>.</li>
+              </ul>
+              <ul class="tags tags--sm"><li>M365</li><li>Intune</li><li>PowerShell</li><li>Azure</li></ul>
+            </div>
+          </li>
+          <li class="timeline__item reveal">
+            <div class="timeline__when">2021 — 2023</div>
+            <div class="timeline__card card">
+              <div class="timeline__top">
+                <h3>System Administrator</h3>
+                <span class="timeline__org">Company Name · City</span>
+              </div>
+              <ul class="bullets">
+                <li>Administered 40+ Windows/Linux servers across two sites with <strong>99.9% uptime</strong>.</li>
+                <li>Redesigned office network with VLAN segmentation and site-to-site VPN.</li>
+                <li>Implemented 3-2-1 backup strategy and documented the disaster-recovery runbook.</li>
+              </ul>
+              <ul class="tags tags--sm"><li>Windows Server</li><li>VMware</li><li>Networking</li><li>Backup</li></ul>
+            </div>
+          </li>
+          <li class="timeline__item reveal">
+            <div class="timeline__when">2019 — 2021</div>
+            <div class="timeline__card card">
+              <div class="timeline__top">
+                <h3>IT Support Technician</h3>
+                <span class="timeline__org">Company Name · City</span>
+              </div>
+              <ul class="bullets">
+                <li>Resolved 30+ tickets/day across hardware, software and network issues with <strong>95% CSAT</strong>.</li>
+                <li>Wrote the internal knowledge base that reduced repeat tickets by 20%.</li>
+              </ul>
+              <ul class="tags tags--sm"><li>Help desk</li><li>Active Directory</li><li>Hardware</li></ul>
+            </div>
+          </li>
+          <li class="timeline__item reveal">
+            <div class="timeline__when">2015 — 2019</div>
+            <div class="timeline__card card">
+              <div class="timeline__top">
+                <h3>B.Sc. Information Technology</h3>
+                <span class="timeline__org">University Name</span>
+              </div>
+              <p class="muted">Focus on networking and systems. Graduated with honors.</p>
+            </div>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ========== PROJECTS ========== -->
+    <section class="section section--alt" id="projects">
+      <div class="container">
+        <header class="section__head section__head--row reveal">
+          <div>
+            <p class="eyebrow">04 — Projects</p>
+            <h2>Selected work</h2>
+          </div>
+          <div class="filters" role="group" aria-label="Filter projects">
+            <button class="filter is-active" data-filter="all" aria-pressed="true">All</button>
+            <button class="filter" data-filter="infra" aria-pressed="false">Infrastructure</button>
+            <button class="filter" data-filter="cloud" aria-pressed="false">Cloud</button>
+            <button class="filter" data-filter="automation" aria-pressed="false">Automation</button>
+          </div>
+        </header>
+
+        <div class="projects">
+          <article class="project reveal" data-cat="cloud">
+            <div class="project__thumb project__thumb--1" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M7 18a4 4 0 0 1-.7-7.9A6 6 0 0 1 18 9a4.5 4.5 0 0 1-.5 9z"/></svg>
+            </div>
+            <div class="project__body">
+              <p class="project__cat">Cloud</p>
+              <h3>Microsoft 365 Migration</h3>
+              <p>Planned and executed a staged mailbox + file migration for 300 users across 3 offices, with training sessions and a rollback plan.</p>
+              <ul class="tags tags--sm"><li>Exchange Online</li><li>SharePoint</li><li>Entra ID</li></ul>
+              <a class="project__link" href="#" aria-label="Read case study: Microsoft 365 Migration">Case study <span aria-hidden="true">→</span></a>
+            </div>
+          </article>
+
+          <article class="project reveal" data-cat="automation">
+            <div class="project__thumb project__thumb--2" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M8 9l-4 3 4 3M16 9l4 3-4 3M14 5l-4 14"/></svg>
+            </div>
+            <div class="project__body">
+              <p class="project__cat">Automation</p>
+              <h3>User Lifecycle Toolkit</h3>
+              <p>PowerShell module that creates accounts, assigns licenses, groups and devices from a single HR form — and reverses it on exit.</p>
+              <ul class="tags tags--sm"><li>PowerShell</li><li>Graph API</li><li>Git</li></ul>
+              <a class="project__link" href="#" aria-label="View code: User Lifecycle Toolkit">View on GitHub <span aria-hidden="true">→</span></a>
+            </div>
+          </article>
+
+          <article class="project reveal" data-cat="infra">
+            <div class="project__thumb project__thumb--3" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="5" r="2"/><circle cx="5" cy="19" r="2"/><circle cx="19" cy="19" r="2"/><path d="M12 7v5M12 12l-6 5M12 12l6 5"/></svg>
+            </div>
+            <div class="project__body">
+              <p class="project__cat">Infrastructure</p>
+              <h3>Office Network Redesign</h3>
+              <p>Segmented a flat network into VLANs for staff, guests, IoT and servers; added site-to-site VPN and monitoring dashboards.</p>
+              <ul class="tags tags--sm"><li>VLAN</li><li>Firewall</li><li>VPN</li></ul>
+              <a class="project__link" href="#" aria-label="Read case study: Office Network Redesign">Case study <span aria-hidden="true">→</span></a>
+            </div>
+          </article>
+
+          <article class="project reveal" data-cat="infra">
+            <div class="project__thumb project__thumb--4" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V6z"/><path d="M9 12l2 2 4-4"/></svg>
+            </div>
+            <div class="project__body">
+              <p class="project__cat">Infrastructure</p>
+              <h3>Backup &amp; DR Overhaul</h3>
+              <p>Replaced ad-hoc backups with an automated 3-2-1 strategy, tested restores quarterly, and cut recovery time from days to hours.</p>
+              <ul class="tags tags--sm"><li>Veeam</li><li>Azure Blob</li><li>Runbooks</li></ul>
+              <a class="project__link" href="#" aria-label="Read case study: Backup and DR Overhaul">Case study <span aria-hidden="true">→</span></a>
+            </div>
+          </article>
+
+          <article class="project reveal" data-cat="cloud">
+            <div class="project__thumb project__thumb--5" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><rect x="6" y="3" width="12" height="18" rx="2"/><path d="M11 18h2"/></svg>
+            </div>
+            <div class="project__body">
+              <p class="project__cat">Cloud</p>
+              <h3>Zero-Touch Device Rollout</h3>
+              <p>Autopilot + Intune deployment so new laptops ship straight to employees and configure themselves on first login.</p>
+              <ul class="tags tags--sm"><li>Intune</li><li>Autopilot</li><li>Compliance</li></ul>
+              <a class="project__link" href="#" aria-label="Read case study: Zero-Touch Device Rollout">Case study <span aria-hidden="true">→</span></a>
+            </div>
+          </article>
+
+          <article class="project reveal" data-cat="automation">
+            <div class="project__thumb project__thumb--6" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M4 19V5M4 19h16M8 15l3-4 3 2 5-6"/></svg>
+            </div>
+            <div class="project__body">
+              <p class="project__cat">Automation</p>
+              <h3>Monitoring &amp; Alerting Stack</h3>
+              <p>Python scripts + dashboards that watch disk, certs, backups and licenses, and post alerts to Teams before users notice.</p>
+              <ul class="tags tags--sm"><li>Python</li><li>Grafana</li><li>Teams webhooks</li></ul>
+              <a class="project__link" href="#" aria-label="View code: Monitoring and Alerting Stack">View on GitHub <span aria-hidden="true">→</span></a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== CERTIFICATIONS ========== -->
+    <section class="section" id="certs">
+      <div class="container">
+        <header class="section__head reveal">
+          <p class="eyebrow">05 — Certifications</p>
+          <h2>Verified skills</h2>
+        </header>
+        <ul class="certs">
+          <li class="cert reveal"><span class="cert__badge">AZ</span><div><h3>Azure Administrator Associate</h3><p>Microsoft · 2024</p></div></li>
+          <li class="cert reveal"><span class="cert__badge">MD</span><div><h3>Endpoint Administrator Associate</h3><p>Microsoft · 2024</p></div></li>
+          <li class="cert reveal"><span class="cert__badge">CC</span><div><h3>CCNA</h3><p>Cisco · 2022</p></div></li>
+          <li class="cert reveal"><span class="cert__badge">A+</span><div><h3>CompTIA A+</h3><p>CompTIA · 2020</p></div></li>
+          <li class="cert reveal"><span class="cert__badge">N+</span><div><h3>CompTIA Network+</h3><p>CompTIA · 2021</p></div></li>
+          <li class="cert reveal"><span class="cert__badge">IT</span><div><h3>ITIL 4 Foundation</h3><p>AXELOS · 2021</p></div></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ========== CONTACT ========== -->
+    <section class="section section--contact" id="contact">
+      <div class="container">
+        <div class="contact card reveal">
+          <div class="contact__copy">
+            <p class="eyebrow">06 — Contact</p>
+            <h2>Let's build something reliable.</h2>
+            <p class="muted">Open to full-time roles, contracts and interesting IT problems. I usually reply within a day.</p>
+            <ul class="contact__links">
+              <li><a href="mailto:you@example.com"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5h18v14H3z"/><path d="M3 6l9 7 9-7"/></svg>you@example.com</a>
+                <button class="copy-btn" data-copy="you@example.com" aria-label="Copy email address">Copy</button></li>
+              <li><a href="https://www.linkedin.com/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M8 10v7M8 7v.01M12 17v-4a2 2 0 0 1 4 0v4M12 10v7"/></svg>LinkedIn</a></li>
+              <li><a href="https://github.com/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 19c-4 1.5-4-2-6-2.5M15 21v-3.5a3 3 0 0 0-.9-2.3c3-.3 6.1-1.5 6.1-6.6A5.2 5.2 0 0 0 18.8 5 4.8 4.8 0 0 0 18.7 1.5S17.6 1.2 15 3a12.4 12.4 0 0 0-6 0C6.4 1.2 5.3 1.5 5.3 1.5A4.8 4.8 0 0 0 5.2 5a5.2 5.2 0 0 0-1.4 3.6c0 5.1 3.1 6.3 6.1 6.6a3 3 0 0 0-.9 2.3V21"/></svg>GitHub</a></li>
+            </ul>
+          </div>
+
+          <form class="form" id="contact-form" novalidate>
+            <div class="field">
+              <label for="f-name">Name</label>
+              <input id="f-name" name="name" type="text" autocomplete="name" required placeholder="Jane Doe">
+            </div>
+            <div class="field">
+              <label for="f-email">Email</label>
+              <input id="f-email" name="email" type="email" autocomplete="email" required placeholder="jane@company.com">
+            </div>
+            <div class="field">
+              <label for="f-msg">Message</label>
+              <textarea id="f-msg" name="message" rows="4" required placeholder="Tell me about the role or project…"></textarea>
+            </div>
+            <button class="btn btn--primary btn--block" type="submit">
+              Send message
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12l16-8-6 16-2-7z"/></svg>
+            </button>
+            <p class="form__note" id="form-note" role="status" aria-live="polite"></p>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <p>© <span id="year"></span> Your Name. Built with care.</p>
+      <a href="#top" class="footer__top">Back to top ↑</a>
+    </div>
+  </footer>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
