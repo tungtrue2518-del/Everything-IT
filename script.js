@@ -66,26 +66,40 @@ const SITE = {
 
   const isDark = () => (root.dataset.theme ||
     (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')) === 'dark';
-  const toggleTheme = () => {
+  // Colour changes spread out in a circle from the button that was pressed
+  const ripple = (from, update) => {
+    if (!document.startViewTransition || reduceMotion) { update(); return; }
+    const r = (from || $('#theme-toggle')).getBoundingClientRect();
+    const x = r.left + r.width / 2, y = r.top + r.height / 2;
+    const end = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
+    root.classList.add('vt-theme');
+    const t = document.startViewTransition(update);
+    t.ready.then(() => root.animate(
+      { clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${end}px at ${x}px ${y}px)`] },
+      { duration: 650, easing: 'cubic-bezier(.2, .7, .2, 1)', pseudoElement: '::view-transition-new(root)' },
+    )).catch(() => {});
+    t.finished.finally(() => root.classList.remove('vt-theme'));
+  };
+  const toggleTheme = from => ripple(from, () => {
     const next = isDark() ? 'light' : 'dark';
     root.dataset.theme = next;
     store('theme', next);
     colorsChanged();
-  };
-  $('#theme-toggle').addEventListener('click', toggleTheme);
+  });
+  $('#theme-toggle').addEventListener('click', e => toggleTheme(e.currentTarget));
   matchMedia('(prefers-color-scheme: dark)').addEventListener('change', colorsChanged);
 
   const accentBtn = $('#accent-btn');
   const accentMenu = $('#accent-menu');
-  const setAccent = name => {
+  const setAccent = (name, from) => ripple(from || accentBtn, () => {
     if (name === 'indigo') delete root.dataset.accent; else root.dataset.accent = name;
     store('accent', name);
     $$('button', accentMenu).forEach(b => b.setAttribute('aria-checked', String(b.dataset.accent === name)));
     colorsChanged();
-  };
+  });
   $$('button', accentMenu).forEach(b => {
     b.setAttribute('aria-checked', String(b.dataset.accent === (root.dataset.accent || 'indigo')));
-    b.addEventListener('click', () => { setAccent(b.dataset.accent); setAccentMenu(false); });
+    b.addEventListener('click', () => { setAccent(b.dataset.accent, b); setAccentMenu(false); });
   });
   const setAccentMenu = open => {
     accentMenu.hidden = !open;
@@ -124,6 +138,38 @@ const SITE = {
   addEventListener('scroll', onScroll, { passive: true });
   onScroll();
 
+  /* ---------- Split headings into words so they can rise in one by one ---------- */
+  const splitWords = el => {
+    let i = 0;
+    const wrap = node => {
+      const w = document.createElement('span');
+      w.className = 'w';
+      const inner = document.createElement('span');
+      inner.style.setProperty('--wi', i++);
+      inner.append(node);
+      w.append(inner);
+      return w;
+    };
+    [...el.childNodes].forEach(node => {
+      if (node.nodeType === Node.TEXT_NODE) {
+        const frag = document.createDocumentFragment();
+        node.textContent.split(/(\s+)/).forEach(part => {
+          if (!part) return;
+          frag.append(/^\s+$/.test(part) ? document.createTextNode(part) : wrap(document.createTextNode(part)));
+        });
+        node.replaceWith(frag);
+      } else if (node.nodeType === Node.ELEMENT_NODE && node.tagName !== 'BR') {
+        node.replaceWith(wrap(node.cloneNode(true)));
+      }
+    });
+    el.classList.add('split');
+  };
+  if (!reduceMotion) {
+    $$('.page-title, .section__head h2, .cta-band h2')
+      .filter(el => !document.body.classList.contains('page-case') || !el.matches('.page-title'))
+      .forEach(splitWords);
+  }
+
   /* ---------- Reveal on scroll (staggered within a group) ---------- */
   const revealObs = new IntersectionObserver(entries => {
     entries.forEach(en => {
@@ -134,7 +180,7 @@ const SITE = {
       revealObs.unobserve(en.target);
     });
   }, { threshold: 0.12 });
-  $$('.reveal').forEach(el => revealObs.observe(el));
+  $$('.reveal, .timeline').forEach(el => revealObs.observe(el));
 
   /* ---------- Count-up stats ---------- */
   const countObs = new IntersectionObserver(entries => {
@@ -329,10 +375,19 @@ const SITE = {
       b.classList.toggle('is-active', b === btn);
       b.setAttribute('aria-pressed', String(b === btn));
     });
-    $$('main [data-cat]').forEach(p => {
+    const items = $$('main [data-cat]');
+    const apply = () => items.forEach(p => {
       const show = f === 'all' || p.dataset.cat === f;
       p.classList.toggle('is-hidden', !show);
-      if (show) p.classList.add('is-in');
+      if (show) p.classList.add('is-in', 'no-anim');
+    });
+    // Cards glide to their new places instead of jumping
+    if (!document.startViewTransition || reduceMotion) { apply(); return; }
+    items.forEach((p, i) => { p.style.viewTransitionName = `item-${i}`; });
+    root.classList.add('vt-filter');
+    document.startViewTransition(apply).finished.finally(() => {
+      root.classList.remove('vt-filter');
+      items.forEach(p => { p.style.viewTransitionName = ''; p.classList.remove('no-anim'); });
     });
   }));
 

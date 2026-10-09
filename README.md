@@ -20,7 +20,10 @@ Settings → Pages → Source: **Deploy from a branch** → choose the branch an
 | `resume.html` | Printable one-page resume (Print / Save as PDF) |
 | `404.html` | "Page not found" page (GitHub Pages uses it automatically) |
 
-Moving between pages uses a smooth fade-and-slide transition in browsers that support it; others load the page normally.
+Moving between pages slides left or right depending on direction, and a project card's picture and title
+morph into its case study page (Chrome, Edge and Safari 18+). Other browsers get a simple fade.
+Switching theme or accent color spreads out in a circle from the button, and filters glide cards into place.
+To add a page to the slide order, add it to `ORDER` at the top of `transitions.js`.
 
 ## Make it yours
 - **Your name, email and links** appear on every page. Use *Find and replace in files* in your editor
@@ -45,6 +48,7 @@ Lines marked ✏️ in the HTML show where to edit.
 ## Files
 - `*.html`: the pages
 - `styles.css`: design system (light/dark themes, layout, animation, page transitions, print styles)
+- `transitions.js`: page-to-page transitions (slide direction, card-to-case-study morph, fallback fade)
 - `script.js`: site settings (`SITE`), theme + accent switcher, command menu, animations, filters,
   copy buttons, contact form
 
