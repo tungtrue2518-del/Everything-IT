@@ -1,4 +1,22 @@
-/* Portfolio — interactions (no dependencies) */
+/* Portfolio — interactions (no dependencies). Shared by every page. */
+
+/* ✏️ Site settings: edit these once and they apply on every page */
+const SITE = {
+  email: 'you@example.com',
+  pages: [
+    ['index.html', 'Home'], ['about.html', 'About'], ['experience.html', 'Experience'],
+    ['projects.html', 'Projects'], ['scripts.html', 'Scripts'], ['contact.html', 'Contact'], ['resume.html', 'Resume'],
+  ],
+  projects: [
+    ['project-m365-migration.html', 'Microsoft 365 Migration'],
+    ['project-user-lifecycle-toolkit.html', 'User Lifecycle Toolkit'],
+    ['project-network-redesign.html', 'Office Network Redesign'],
+    ['project-backup-dr.html', 'Backup & DR Overhaul'],
+    ['project-zero-touch-rollout.html', 'Zero-Touch Device Rollout'],
+    ['project-monitoring-stack.html', 'Monitoring & Alerting Stack'],
+  ],
+};
+
 (() => {
   const root = document.documentElement;
   root.classList.add('js');
@@ -20,6 +38,7 @@
   };
 
   /* ---------- Boot intro ---------- */
+  if (root.classList.contains('is-booting') && !$('#boot')) root.classList.remove('is-booting');
   if (root.classList.contains('is-booting')) {
     const boot = $('#boot'), log = $('#boot-log'), bar = $('.boot__bar span', boot);
     const lines = [
@@ -104,17 +123,6 @@
   };
   addEventListener('scroll', onScroll, { passive: true });
   onScroll();
-
-  /* ---------- Active section in nav ---------- */
-  const navMap = new Map($$('a', links).map(a => [a.getAttribute('href').slice(1), a]));
-  const sectionObs = new IntersectionObserver(entries => {
-    entries.forEach(en => {
-      if (!en.isIntersecting) return;
-      navMap.forEach(a => a.classList.remove('is-active'));
-      navMap.get(en.target.id)?.classList.add('is-active');
-    });
-  }, { rootMargin: '-45% 0px -50% 0px' });
-  $$('main section[id]').forEach(s => sectionObs.observe(s));
 
   /* ---------- Reveal on scroll (staggered within a group) ---------- */
   const revealObs = new IntersectionObserver(entries => {
@@ -313,7 +321,7 @@
     $('#heat-total').textContent = total.toLocaleString();
   }
 
-  /* ---------- Project filters ---------- */
+  /* ---------- Filters (projects + scripts pages) ---------- */
   const filters = $$('.filter');
   filters.forEach(btn => btn.addEventListener('click', () => {
     const f = btn.dataset.filter;
@@ -321,21 +329,64 @@
       b.classList.toggle('is-active', b === btn);
       b.setAttribute('aria-pressed', String(b === btn));
     });
-    $$('.project').forEach(p => {
+    $$('main [data-cat]').forEach(p => {
       const show = f === 'all' || p.dataset.cat === f;
       p.classList.toggle('is-hidden', !show);
       if (show) p.classList.add('is-in');
     });
   }));
 
-  /* ---------- Copy email / print ---------- */
-  const email = $('.copy-btn')?.dataset.copy || '';
-  const copyEmail = async () => {
-    try { await navigator.clipboard.writeText(email); showToast('Email copied to clipboard'); }
-    catch (e) { showToast(email); }
+  /* ---------- Case study: highlight current section in "On this page" ---------- */
+  const tocLinks = $$('.case__toc a');
+  if (tocLinks.length) {
+    const tocObs = new IntersectionObserver(entries => {
+      entries.forEach(en => {
+        if (!en.isIntersecting) return;
+        tocLinks.forEach(a => a.classList.toggle('is-active', a.getAttribute('href') === '#' + en.target.id));
+      });
+    }, { rootMargin: '-30% 0px -60% 0px' });
+    $$('.case__body section[id]').forEach(s => tocObs.observe(s));
+  }
+
+  /* ---------- Copy email / code, print resume ---------- */
+  const email = SITE.email;
+  const copyText = async (text, done) => {
+    try { await navigator.clipboard.writeText(text); showToast(done); }
+    catch (e) { showToast('Copy failed: select the text and copy it manually'); }
   };
+  const copyEmail = () => copyText(email, 'Email copied to clipboard');
   $$('.copy-btn').forEach(btn => btn.addEventListener('click', copyEmail));
+  $$('.code__copy').forEach(btn => btn.addEventListener('click', () => {
+    copyText(btn.parentElement.querySelector('code').textContent, 'Script copied to clipboard');
+    btn.textContent = 'Copied';
+    setTimeout(() => { btn.textContent = 'Copy'; }, 1600);
+  }));
   $('#print-resume')?.addEventListener('click', () => window.print());
+
+  /* ---------- Light syntax colouring for script cards ---------- */
+  const KEYWORDS = {
+    powershell: /^(if|else|elseif|foreach|function|param|return|import-module)$/i,
+    python: /^(import|from|def|return|for|in|with|as|if|else|elif|print)$/,
+    bash: /^(set|if|then|fi|for|do|done|find|sort|tail|cut|xargs|rm)$/,
+  };
+  const esc = s => s.replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
+  $$('pre[data-lang] code').forEach(code => {
+    const kw = KEYWORDS[code.parentElement.dataset.lang];
+    // comments | strings | $variables | words — wrapped in \0 markers, so odd split parts are tokens
+    const tokens = /#[^\n]*|"(?:[^"\\]|\\.)*"|'[^']*'|\$\(?[\w:.]+\)?|\b[A-Za-z][\w-]*\b/g;
+    code.innerHTML = code.textContent
+      .replace(tokens, '\u0000$&\u0000')
+      .split('\u0000')
+      .map((part, i) => {
+        if (i % 2 === 0) return esc(part);
+        if (part.startsWith('#')) return `<span class="tok-c">${esc(part)}</span>`;
+        if (/^["']/.test(part)) return `<span class="tok-s">${esc(part)}</span>`;
+        if (part.startsWith('$')) return `<span class="tok-v">${esc(part)}</span>`;
+        if (kw && kw.test(part)) return `<span class="tok-k">${esc(part)}</span>`;
+        if (/^[A-Z][a-z]+-[A-Z]\w+$/.test(part)) return `<span class="tok-f">${esc(part)}</span>`;
+        return esc(part);
+      }).join('');
+  });
 
   /* ---------- Command palette (⌘K / Ctrl+K / "/") ---------- */
   const dlg = $('#cmdk');
@@ -348,14 +399,16 @@
     print: '<path d="M6 9V3h12v6M6 18H4v-7h16v7h-2M8 14h8v7H8z"/>',
     dot: '<circle cx="12" cy="12" r="5"/>',
   };
-  const go = id => () => document.getElementById(id)?.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth' });
+  const here = location.pathname.split('/').pop() || 'index.html';
+  const go = href => () => { location.href = href; };
   const commands = [
-    ...[['about', 'About'], ['skills', 'Skills'], ['experience', 'Experience'], ['projects', 'Projects'],
-      ['certs', 'Certifications'], ['testimonials', 'Testimonials'], ['contact', 'Contact']]
-      .map(([id, label]) => ({ group: 'Go to', label, icon: 'go', run: go(id) })),
+    ...SITE.pages.filter(([href]) => href !== here)
+      .map(([href, label]) => ({ group: 'Pages', label, icon: 'go', run: go(href) })),
+    ...SITE.projects.filter(([href]) => href !== here)
+      .map(([href, label]) => ({ group: 'Projects', label, icon: 'go', run: go(href) })),
     { group: 'Actions', label: 'Toggle light / dark theme', icon: 'theme', hint: 'T', run: toggleTheme },
     { group: 'Actions', label: 'Copy email address', icon: 'copy', run: copyEmail },
-    { group: 'Actions', label: 'Print / save resume as PDF', icon: 'print', run: () => setTimeout(() => window.print(), 150) },
+    { group: 'Actions', label: 'Open printable resume', icon: 'print', run: go('resume.html') },
     ...['indigo', 'emerald', 'sunset', 'ocean'].map(a => ({
       group: 'Accent color', label: a[0].toUpperCase() + a.slice(1), icon: 'dot', accent: a, run: () => setAccent(a),
     })),
@@ -423,7 +476,7 @@
      ✏️ To use a form service (Formspree, etc.), set the form's action/method and remove this handler. */
   const form = $('#contact-form');
   const note = $('#form-note');
-  form.addEventListener('submit', e => {
+  form?.addEventListener('submit', e => {
     e.preventDefault();
     let ok = true;
     $$('input, textarea', form).forEach(f => {
