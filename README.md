@@ -15,6 +15,7 @@ Settings → Pages → Source: **Deploy from a branch** → choose the branch an
 | `experience.html` | Work timeline and certifications |
 | `projects.html` | All projects with filters |
 | `project-*.html` | One case study per project (overview, challenge, steps, results, lessons) |
+| `gallery.html` | Photo gallery of your work with filters and a full-screen viewer |
 | `scripts.html` | Script library with copy buttons and language filters |
 | `contact.html` | Contact details and form |
 | `resume.html` | Printable one-page resume (Print / Save as PDF) |
@@ -37,6 +38,14 @@ To add a page to the slide order, add it to `ORDER` at the top of `transitions.j
 - **Scripts:** in `scripts.html`, copy one `<article class="script-card">` block per script. Set `data-cat`
   and the badge to `powershell`, `python` or `bash` so the filters work.
 - **Resume:** edit the text in `resume.html`. It prints on one A4 / Letter page.
+- **Photos (Gallery):**
+  1. Put your photos in `images/gallery/` (JPG or WebP, about 1600 px on the long side keeps pages fast).
+  2. In `gallery.html`, each photo is one `<figure class="shot">` block. Replace its placeholder
+     `<div class="shot__media ph ...">…</div>` with
+     `<img class="shot__media" src="images/gallery/your-photo.jpg" alt="What the photo shows" loading="lazy">`.
+  3. Edit the caption (category, title, place · year) and set `data-cat` to `infra`, `network`, `support`,
+     `people` or `awards` so the filters work. Add or delete `<figure>` blocks freely; any photo shape works.
+  4. The "Behind the scenes" strip on the home page uses the same kind of tiles; swap those too.
 - **Colors:** pick a preset with the palette button in the nav (Indigo, Emerald, Sunset, Ocean), or edit the
   `--a1-l / --a2-l / --a3-l` (light) and `--a1-d / --a2-d / --a3-d` (dark) values at the top of `styles.css`.
 - **Testimonials, heatmap and case study text** are samples. Replace them or delete those blocks.

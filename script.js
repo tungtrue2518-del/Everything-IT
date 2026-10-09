@@ -5,7 +5,7 @@ const SITE = {
   email: 'you@example.com',
   pages: [
     ['index.html', 'Home'], ['about.html', 'About'], ['experience.html', 'Experience'],
-    ['projects.html', 'Projects'], ['scripts.html', 'Scripts'], ['contact.html', 'Contact'], ['resume.html', 'Resume'],
+    ['projects.html', 'Projects'], ['gallery.html', 'Gallery'], ['scripts.html', 'Scripts'], ['contact.html', 'Contact'], ['resume.html', 'Resume'],
   ],
   projects: [
     ['project-m365-migration.html', 'Microsoft 365 Migration'],
@@ -376,11 +376,15 @@ const SITE = {
       b.setAttribute('aria-pressed', String(b === btn));
     });
     const items = $$('main [data-cat]');
-    const apply = () => items.forEach(p => {
-      const show = f === 'all' || p.dataset.cat === f;
-      p.classList.toggle('is-hidden', !show);
-      if (show) p.classList.add('is-in', 'no-anim');
-    });
+    const apply = () => {
+      items.forEach(p => {
+        const show = f === 'all' || p.dataset.cat === f;
+        p.classList.toggle('is-hidden', !show);
+        if (show) p.classList.add('is-in', 'no-anim');
+      });
+      const count = $('#gallery-count');
+      if (count) count.textContent = items.filter(p => !p.classList.contains('is-hidden')).length;
+    };
     // Cards glide to their new places instead of jumping
     if (!document.startViewTransition || reduceMotion) { apply(); return; }
     items.forEach((p, i) => { p.style.viewTransitionName = `item-${i}`; });
@@ -521,11 +525,74 @@ const SITE = {
   dlg.addEventListener('click', e => { if (e.target === dlg) dlg.close(); });
   document.addEventListener('keydown', e => {
     const typing = /^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement?.tagName);
-    if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); dlg.open ? dlg.close() : openCmdk(); }
-    else if (e.key === '/' && !typing && !dlg.open) { e.preventDefault(); openCmdk(); }
-    else if (e.key.toLowerCase() === 't' && !typing && !dlg.open && !e.metaKey && !e.ctrlKey && !e.altKey) toggleTheme();
+    if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); dlg.open ? dlg.close() : openCmdk(); return; }
+    const anyDialog = !!document.querySelector('dialog[open]');
+    if (e.key === '/' && !typing && !anyDialog) { e.preventDefault(); openCmdk(); }
+    else if (e.key.toLowerCase() === 't' && !typing && !anyDialog && !e.metaKey && !e.ctrlKey && !e.altKey) toggleTheme();
   });
   if (!/Mac|iPhone|iPad/.test(navigator.platform)) $$('kbd').forEach(k => { if (k.textContent === '⌘K') k.textContent = 'Ctrl K'; });
+
+  /* ---------- Gallery: full-screen photo viewer ---------- */
+  const lb = $('#lightbox');
+  if (lb) {
+    const stage = $('#lb-stage'), caption = $('#lb-caption'), counter = $('#lb-count'), thumbs = $('#lb-thumbs');
+    const visibleShots = () => $$('.gallery .shot:not(.is-hidden)');
+    let list = [], index = 0;
+
+    const media = shot => {
+      const m = $('.shot__media', shot).cloneNode(true);
+      const img = m.tagName === 'IMG' ? m : null;
+      if (img) { img.loading = 'eager'; if (img.dataset.full) img.src = img.dataset.full; }
+      return m;
+    };
+    const show = (i, dir = 0) => {
+      index = (i + list.length) % list.length;
+      const shot = list[index];
+      stage.replaceChildren(media(shot));
+      caption.innerHTML = $('figcaption', shot).innerHTML;
+      counter.textContent = `${index + 1} / ${list.length}`;
+      $$('.lb__thumb', thumbs).forEach((t, n) => t.setAttribute('aria-current', String(n === index)));
+      $$('.lb__thumb', thumbs)[index]?.scrollIntoView({ block: 'nearest', inline: 'center' });
+      if (!reduceMotion) {
+        stage.firstElementChild.animate(
+          [{ opacity: 0, transform: `translateX(${dir * 40}px) scale(.97)` }, { opacity: 1, transform: 'none' }],
+          { duration: 380, easing: 'cubic-bezier(.2, .7, .2, 1)' });
+      }
+    };
+    const open = shot => {
+      list = visibleShots();
+      thumbs.replaceChildren(...list.map((s, n) => {
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'lb__thumb';
+        b.setAttribute('aria-label', `Show photo ${n + 1}: ${$('figcaption strong', s).textContent}`);
+        b.append(media(s));
+        b.addEventListener('click', () => show(n, n > index ? 1 : -1));
+        return b;
+      }));
+      lb.showModal();
+      show(list.indexOf(shot));
+    };
+
+    $$('.gallery .shot__open').forEach(btn => btn.addEventListener('click', () => open(btn.closest('.shot'))));
+    $('#lb-prev').addEventListener('click', () => show(index - 1, -1));
+    $('#lb-next').addEventListener('click', () => show(index + 1, 1));
+    $('#lb-close').addEventListener('click', () => lb.close());
+    lb.addEventListener('keydown', e => {
+      if (e.key === 'ArrowLeft') { e.preventDefault(); show(index - 1, -1); }
+      if (e.key === 'ArrowRight') { e.preventDefault(); show(index + 1, 1); }
+    });
+    // Click on the dark background closes; swipe left / right changes photo
+    lb.addEventListener('click', e => { if (e.target === lb || e.target === stage || e.target.classList.contains('lb__body')) lb.close(); });
+    let startX = null;
+    stage.addEventListener('pointerdown', e => { startX = e.clientX; });
+    stage.addEventListener('pointerup', e => {
+      if (startX === null) return;
+      const dx = e.clientX - startX;
+      startX = null;
+      if (Math.abs(dx) > 50) show(index + (dx < 0 ? 1 : -1), dx < 0 ? 1 : -1);
+    });
+  }
 
   /* ---------- Contact form → opens the visitor's email app ----------
      ✏️ To use a form service (Formspree, etc.), set the form's action/method and remove this handler. */

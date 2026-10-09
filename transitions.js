@@ -12,7 +12,7 @@
     'index.html', 'about.html', 'experience.html', 'projects.html',
     'project-m365-migration.html', 'project-user-lifecycle-toolkit.html', 'project-network-redesign.html',
     'project-backup-dr.html', 'project-zero-touch-rollout.html', 'project-monitoring-stack.html',
-    'scripts.html', 'contact.html', 'resume.html',
+    'gallery.html', 'scripts.html', 'contact.html', 'resume.html',
   ];
   const isCase = f => f.startsWith('project-');
   const hasCards = f => f === 'projects.html' || f === 'index.html';

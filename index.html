@@ -60,6 +60,7 @@
         <a href="about.html">About</a>
         <a href="experience.html">Experience</a>
         <a href="projects.html">Projects</a>
+        <a href="gallery.html">Gallery</a>
         <a href="scripts.html">Scripts</a>
         <a href="contact.html">Contact</a>
       </nav>
@@ -214,7 +215,14 @@
             <span class="explore__text">PowerShell, Python and Bash you can copy and use.</span>
             <span class="explore__go" aria-hidden="true">↗</span>
           </a>
-          <a class="explore__card reveal" href="contact.html">
+          <a class="explore__card reveal" href="gallery.html">
+            <span class="explore__icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg></span>
+            <span class="explore__label">Gallery</span>
+            <span class="explore__title">Work in pictures</span>
+            <span class="explore__text">Installs, server rooms, rollouts and team moments.</span>
+            <span class="explore__go" aria-hidden="true">↗</span>
+          </a>
+          <a class="explore__card explore__card--full reveal" href="contact.html">
             <span class="explore__icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5h18v14H3z"/><path d="M3 6l9 7 9-7"/></svg></span>
             <span class="explore__label">Contact</span>
             <span class="explore__title">Let's talk</span>
@@ -224,6 +232,29 @@
         </div>
       </div>
     </section>
+    <section class="section section--strip">
+      <div class="container">
+        <header class="section__head section__head--row reveal">
+          <div>
+            <p class="eyebrow">Behind the scenes</p>
+            <h2>Work in <em>pictures</em></h2>
+          </div>
+          <a class="btn btn--ghost" href="gallery.html">Open gallery <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-6-6l6 6-6 6"/></svg></a>
+        </header>
+      </div>
+      <!-- ✏️ These tiles mirror the first photos in gallery.html. Swap the placeholder <div> for <img class="shot__media" src="..." alt="..."> -->
+      <div class="strip reveal">
+            <a class="strip__item" href="gallery.html" aria-label="Server rack re-cabling"><div class="shot__media ph ph--4" style="--ar:4/3"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="6" rx="1.5"/><rect x="3" y="14" width="18" height="6" rx="1.5"/><path d="M7 7h.01M7 17h.01"/></svg></div><span>Server rack re-cabling</span></a>
+            <a class="strip__item" href="gallery.html" aria-label="New office network install"><div class="shot__media ph ph--3" style="--ar:4/3"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="5" r="2"/><circle cx="5" cy="19" r="2"/><circle cx="19" cy="19" r="2"/><path d="M12 7v5M12 12l-6 5M12 12l6 5"/></svg></div><span>New office network install</span></a>
+            <a class="strip__item" href="gallery.html" aria-label="Laptop rollout day"><div class="shot__media ph ph--5" style="--ar:4/3"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="11" rx="1.5"/><path d="M2 19h20"/></svg></div><span>Laptop rollout day</span></a>
+            <a class="strip__item" href="gallery.html" aria-label="Microsoft 365 workshop"><div class="shot__media ph ph--1" style="--ar:4/3"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6M15 14.5c2.8 0 5 2 5 5"/></svg></div><span>Microsoft 365 workshop</span></a>
+            <a class="strip__item" href="gallery.html" aria-label="CCNA certificate"><div class="shot__media ph ph--6" style="--ar:4/3"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="9" r="6"/><path d="M8.5 14l-1.5 7 5-3 5 3-1.5-7"/></svg></div><span>CCNA certificate</span></a>
+            <a class="strip__item" href="gallery.html" aria-label="Wi-Fi coverage survey"><div class="shot__media ph ph--2" style="--ar:4/3"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 9a15 15 0 0 1 20 0M5 12.5a10 10 0 0 1 14 0M8.5 16a5 5 0 0 1 7 0"/><circle cx="12" cy="19.5" r="1"/></svg></div><span>Wi-Fi coverage survey</span></a>
+            <a class="strip__item" href="gallery.html" aria-label="UPS and power upgrade"><div class="shot__media ph ph--4" style="--ar:4/3"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg></div><span>UPS and power upgrade</span></a>
+            <a class="strip__item" href="gallery.html" aria-label="IT team day"><div class="shot__media ph ph--1" style="--ar:4/3"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6M15 14.5c2.8 0 5 2 5 5"/></svg></div><span>IT team day</span></a>
+      </div>
+    </section>
+
     <section class="section section--alt">
       <div class="container">
         <header class="section__head reveal">
@@ -297,7 +328,7 @@
         <a href="contact.html" class="footer__cta">Let's work together <span aria-hidden="true">↗</span></a>
         <nav class="footer__links" aria-label="Footer">
           <a href="about.html">About</a><a href="experience.html">Experience</a><a href="projects.html">Projects</a>
-          <a href="scripts.html">Scripts</a><a href="resume.html">Resume</a>
+          <a href="gallery.html">Gallery</a><a href="scripts.html">Scripts</a><a href="resume.html">Resume</a>
           <a href="https://www.linkedin.com/" target="_blank" rel="noopener">LinkedIn</a>
           <a href="https://github.com/" target="_blank" rel="noopener">GitHub</a>
         </nav>
