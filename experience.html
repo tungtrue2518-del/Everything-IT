@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- ✏️ Page title and description (used by Google and link previews) -->
+  <title>Experience — Your Name</title>
+  <meta name="description" content="Work history, education and certifications of Your Name.">
+  <meta property="og:title" content="Experience — Your Name">
+  <meta property="og:description" content="Work history, education and certifications of Your Name.">
+  <meta name="theme-color" content="#0b0d12" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#f7f7f4" media="(prefers-color-scheme: light)">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%235b5bf7'/%3E%3Ctext x='50%25' y='54%25' text-anchor='middle' dominant-baseline='middle' font-family='monospace' font-size='30' font-weight='700' fill='white'%3EYN%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="expect" href="#page-end" blocking="render">
+  <script src="transitions.js"></script>
+  <script type="speculationrules">{"prerender": [{"where": {"href_matches": "*.html"}, "eagerness": "moderate"}]}</script>
+</head>
+<body>
+  <script src="site.js"></script>
+
+  <main id="main">
+    <section class="hero hero--page">
+      <div class="hero__bg" aria-hidden="true"></div>
+      <div class="container">
+          <nav class="crumbs reveal" aria-label="Breadcrumb"><a href="index.html">Home</a> <span aria-hidden="true">/</span> <span aria-current="page">Experience</span></nav>
+          <p class="eyebrow reveal">Experience</p>
+          <h1 class="page-title reveal">Where I've <em>worked</em></h1>
+          <p class="hero__lead reveal">Roles, responsibilities and results, newest first. Certifications are listed below.</p>
+      </div>
+    </section>
+    <section class="section">
+      <div class="container">
+        <ol class="timeline">
+          <li class="timeline__item reveal">
+            <div class="timeline__when">2023 — Present</div>
+            <div class="timeline__card card">
+              <div class="timeline__top">
+                <h3>IT Infrastructure Specialist</h3>
+                <span class="timeline__org">Company Name · City</span>
+              </div>
+              <ul class="bullets">
+                <li>Led migration of <strong>300+ users</strong> from on-prem Exchange to Microsoft 365 with zero data loss.</li>
+                <li>Rolled out Intune device management, cutting new-laptop setup time from 3 hours to <strong>25 minutes</strong>.</li>
+                <li>Built PowerShell automation for onboarding/offboarding, saving ~<strong>10 hours/week</strong>.</li>
+              </ul>
+              <ul class="tags tags--sm"><li>M365</li><li>Intune</li><li>PowerShell</li><li>Azure</li></ul>
+            </div>
+          </li>
+          <li class="timeline__item reveal">
+            <div class="timeline__when">2021 — 2023</div>
+            <div class="timeline__card card">
+              <div class="timeline__top">
+                <h3>System Administrator</h3>
+                <span class="timeline__org">Company Name · City</span>
+              </div>
+              <ul class="bullets">
+                <li>Administered 40+ Windows/Linux servers across two sites with <strong>99.9% uptime</strong>.</li>
+                <li>Redesigned office network with VLAN segmentation and site-to-site VPN.</li>
+                <li>Implemented 3-2-1 backup strategy and documented the disaster-recovery runbook.</li>
+              </ul>
+              <ul class="tags tags--sm"><li>Windows Server</li><li>VMware</li><li>Networking</li><li>Backup</li></ul>
+            </div>
+          </li>
+          <li class="timeline__item reveal">
+            <div class="timeline__when">2019 — 2021</div>
+            <div class="timeline__card card">
+              <div class="timeline__top">
+                <h3>IT Support Technician</h3>
+                <span class="timeline__org">Company Name · City</span>
+              </div>
+              <ul class="bullets">
+                <li>Resolved 30+ tickets/day across hardware, software and network issues with <strong>95% CSAT</strong>.</li>
+                <li>Wrote the internal knowledge base that reduced repeat tickets by 20%.</li>
+              </ul>
+              <ul class="tags tags--sm"><li>Help desk</li><li>Active Directory</li><li>Hardware</li></ul>
+            </div>
+          </li>
+          <li class="timeline__item reveal">
+            <div class="timeline__when">2015 — 2019</div>
+            <div class="timeline__card card">
+              <div class="timeline__top">
+                <h3>B.Sc. Information Technology</h3>
+                <span class="timeline__org">University Name</span>
+              </div>
+              <p class="muted">Focus on networking and systems. Graduated with honors.</p>
+            </div>
+          </li>
+        </ol>
+      </div>
+    </section>
+    <section class="section section--alt" id="certs">
+      <div class="container">
+        <header class="section__head reveal">
+          <p class="eyebrow">Certifications</p>
+          <h2>Verified <em>skills</em></h2>
+        </header>
+
+        <ul class="certs">
+          <li class="cert reveal"><span class="cert__badge">AZ</span><div><h3>Azure Administrator Associate</h3><p>Microsoft · 2024</p></div></li>
+          <li class="cert reveal"><span class="cert__badge">MD</span><div><h3>Endpoint Administrator Associate</h3><p>Microsoft · 2024</p></div></li>
+          <li class="cert reveal"><span class="cert__badge">CC</span><div><h3>CCNA</h3><p>Cisco · 2022</p></div></li>
+          <li class="cert reveal"><span class="cert__badge">A+</span><div><h3>CompTIA A+</h3><p>CompTIA · 2020</p></div></li>
+          <li class="cert reveal"><span class="cert__badge">N+</span><div><h3>CompTIA Network+</h3><p>CompTIA · 2021</p></div></li>
+          <li class="cert reveal"><span class="cert__badge">IT</span><div><h3>ITIL 4 Foundation</h3><p>AXELOS · 2021</p></div></li>
+        </ul>
+      </div>
+    </section>
+    <span id="page-end"></span>
+  </main>
+
+  <script>SITE.footer()</script>
+  <script src="script.js"></script>
+</body>
+</html>

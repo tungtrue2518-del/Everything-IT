@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- ✏️ Page title and description (used by Google and link previews) -->
+  <title>Scripts — Your Name</title>
+  <meta name="description" content="PowerShell, Python and Bash scripts for everyday IT work.">
+  <meta property="og:title" content="Scripts — Your Name">
+  <meta property="og:description" content="PowerShell, Python and Bash scripts for everyday IT work.">
+  <meta name="theme-color" content="#0b0d12" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#f7f7f4" media="(prefers-color-scheme: light)">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%235b5bf7'/%3E%3Ctext x='50%25' y='54%25' text-anchor='middle' dominant-baseline='middle' font-family='monospace' font-size='30' font-weight='700' fill='white'%3EYN%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="expect" href="#page-end" blocking="render">
+  <script src="transitions.js"></script>
+  <script type="speculationrules">{"prerender": [{"where": {"href_matches": "*.html"}, "eagerness": "moderate"}]}</script>
+</head>
+<body>
+  <script src="site.js"></script>
+
+  <main id="main">
+    <section class="hero hero--page">
+      <div class="hero__bg" aria-hidden="true"></div>
+      <div class="container">
+          <nav class="crumbs reveal" aria-label="Breadcrumb"><a href="index.html">Home</a> <span aria-hidden="true">/</span> <span aria-current="page">Scripts</span></nav>
+          <p class="eyebrow reveal">Scripts</p>
+          <h1 class="page-title reveal">My script <em>library</em></h1>
+          <p class="hero__lead reveal">Small, practical scripts from day-to-day IT work. Read them, copy them, adapt them. Always test in a safe environment first.</p>
+          <div class="filters reveal" role="group" aria-label="Filter scripts">
+            <button class="filter is-active" data-filter="all" aria-pressed="true">All</button>
+            <button class="filter" data-filter="powershell" aria-pressed="false">PowerShell</button>
+            <button class="filter" data-filter="python" aria-pressed="false">Python</button>
+            <button class="filter" data-filter="bash" aria-pressed="false">Bash</button>
+          </div>
+      </div>
+    </section>
+    <section class="section">
+      <div class="container">
+        <!-- ✏️ Sample scripts: replace or add your own. Copy one <article class="script-card"> block per script. -->
+        <div class="scripts">
+          <article class="script-card reveal" data-cat="powershell">
+            <header class="script-card__head">
+              <span class="lang-badge lang-badge--powershell">PowerShell</span>
+              <h3>Find inactive AD users</h3>
+              <p>Lists enabled accounts that have not signed in for 90 days and exports them to CSV for review.</p>
+            </header>
+            <div class="code">
+              <button class="code__copy" type="button" aria-label="Copy Find inactive AD users script">Copy</button>
+              <pre data-lang="powershell"><code># Lists enabled AD accounts with no sign-in for 90+ days
+Import-Module ActiveDirectory
+$cutoff = (Get-Date).AddDays(-90)
+
+Get-ADUser -Filter {Enabled -eq $true -and LastLogonDate -lt $cutoff} -Properties LastLogonDate |
+  Select-Object Name, SamAccountName, LastLogonDate |
+  Sort-Object LastLogonDate |
+  Export-Csv -Path .\inactive-users.csv -NoTypeInformation</code></pre>
+            </div>
+            <ul class="tags tags--sm"><li>Active Directory</li><li>Security</li></ul>
+          </article>
+          <article class="script-card reveal" data-cat="powershell">
+            <header class="script-card__head">
+              <span class="lang-badge lang-badge--powershell">PowerShell</span>
+              <h3>Low disk space warning</h3>
+              <p>Checks every fixed drive and warns when free space drops below a threshold.</p>
+            </header>
+            <div class="code">
+              <button class="code__copy" type="button" aria-label="Copy Low disk space warning script">Copy</button>
+              <pre data-lang="powershell"><code># Warns when any fixed drive drops below 15% free space
+$threshold = 15
+
+Get-CimInstance Win32_LogicalDisk -Filter &quot;DriveType=3&quot; | ForEach-Object {
+  $free = [math]::Round($_.FreeSpace / $_.Size * 100, 1)
+  if ($free -lt $threshold) {
+    Write-Warning &quot;$($_.DeviceID) has only $free% free&quot;
+  }
+}</code></pre>
+            </div>
+            <ul class="tags tags--sm"><li>Windows</li><li>Monitoring</li></ul>
+          </article>
+          <article class="script-card reveal" data-cat="python">
+            <header class="script-card__head">
+              <span class="lang-badge lang-badge--python">Python</span>
+              <h3>TLS certificate expiry check</h3>
+              <p>Connects to each host and prints how many days are left before its certificate expires.</p>
+            </header>
+            <div class="code">
+              <button class="code__copy" type="button" aria-label="Copy TLS certificate expiry check script">Copy</button>
+              <pre data-lang="python"><code># Prints days until each site&#x27;s TLS certificate expires
+import socket, ssl, time
+
+HOSTS = [&quot;example.com&quot;, &quot;intranet.example.com&quot;]
+
+def days_left(host, port=443):
+    ctx = ssl.create_default_context()
+    with socket.create_connection((host, port), timeout=5) as sock:
+        with ctx.wrap_socket(sock, server_hostname=host) as tls:
+            expires = ssl.cert_time_to_seconds(tls.getpeercert()[&quot;notAfter&quot;])
+    return int((expires - time.time()) // 86400)
+
+for host in HOSTS:
+    print(f&quot;{host:30} {days_left(host):&gt;4} days&quot;)</code></pre>
+            </div>
+            <ul class="tags tags--sm"><li>Certificates</li><li>Monitoring</li></ul>
+          </article>
+          <article class="script-card reveal" data-cat="bash">
+            <header class="script-card__head">
+              <span class="lang-badge lang-badge--bash">Bash</span>
+              <h3>Backup rotation</h3>
+              <p>Keeps the newest 14 backup archives in a folder and deletes older ones.</p>
+            </header>
+            <div class="code">
+              <button class="code__copy" type="button" aria-label="Copy Backup rotation script">Copy</button>
+              <pre data-lang="bash"><code>#!/usr/bin/env bash
+# Keeps the 14 newest backup archives and deletes the rest
+set -euo pipefail
+BACKUP_DIR=&quot;/srv/backups&quot;
+KEEP=14
+
+find &quot;$BACKUP_DIR&quot; -maxdepth 1 -name &#x27;*.tar.gz&#x27; -printf &#x27;%T@ %p\n&#x27; |
+  sort -rn | tail -n +$((KEEP + 1)) | cut -d&#x27; &#x27; -f2- |
+  xargs -r -d &#x27;\n&#x27; rm --</code></pre>
+            </div>
+            <ul class="tags tags--sm"><li>Linux</li><li>Backup</li></ul>
+          </article>
+        </div>
+      </div>
+    </section>
+    <span id="page-end"></span>
+  </main>
+
+  <script>SITE.footer()</script>
+  <script src="script.js"></script>
+</body>
+</html>

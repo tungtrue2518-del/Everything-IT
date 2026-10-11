@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- ✏️ Page title and description (used by Google and link previews) -->
+  <title>Project — Your Name</title>
+  <meta name="description" content="Case study of an IT project by Your Name.">
+  <meta property="og:title" content="Project — Your Name">
+  <meta property="og:description" content="Case study of an IT project by Your Name.">
+  <meta name="theme-color" content="#0b0d12" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#f7f7f4" media="(prefers-color-scheme: light)">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%235b5bf7'/%3E%3Ctext x='50%25' y='54%25' text-anchor='middle' dominant-baseline='middle' font-family='monospace' font-size='30' font-weight='700' fill='white'%3EYN%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="expect" href="#page-end" blocking="render">
+  <script src="transitions.js"></script>
+  <script type="speculationrules">{"prerender": [{"where": {"href_matches": "*.html"}, "eagerness": "moderate"}]}</script>
+</head>
+<body class="page-case">
+  <script src="site.js"></script>
+
+  <main id="main">
+    <!-- The case study is built from SITE.projects in site.js, using the id after # in the address -->
+    <script>SITE.caseStudy()</script>
+    <span id="page-end"></span>
+  </main>
+
+  <script>SITE.footer()</script>
+  <script src="script.js"></script>
+</body>
+</html>

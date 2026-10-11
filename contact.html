@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- ✏️ Page title and description (used by Google and link previews) -->
+  <title>Contact — Your Name</title>
+  <meta name="description" content="Get in touch with Your Name about IT roles and projects.">
+  <meta property="og:title" content="Contact — Your Name">
+  <meta property="og:description" content="Get in touch with Your Name about IT roles and projects.">
+  <meta name="theme-color" content="#0b0d12" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#f7f7f4" media="(prefers-color-scheme: light)">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%235b5bf7'/%3E%3Ctext x='50%25' y='54%25' text-anchor='middle' dominant-baseline='middle' font-family='monospace' font-size='30' font-weight='700' fill='white'%3EYN%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="expect" href="#page-end" blocking="render">
+  <script src="transitions.js"></script>
+  <script type="speculationrules">{"prerender": [{"where": {"href_matches": "*.html"}, "eagerness": "moderate"}]}</script>
+</head>
+<body>
+  <script src="site.js"></script>
+
+  <main id="main">
+    <section class="hero hero--page">
+      <div class="hero__bg" aria-hidden="true"></div>
+      <div class="container">
+          <nav class="crumbs reveal" aria-label="Breadcrumb"><a href="index.html">Home</a> <span aria-hidden="true">/</span> <span aria-current="page">Contact</span></nav>
+          <p class="eyebrow reveal">Contact</p>
+          <h1 class="page-title reveal">Let's build something <em>reliable.</em></h1>
+          <p class="hero__lead reveal">Tell me about the role or the problem you are solving. The quickest way to reach me is email.</p>
+      </div>
+    </section>
+    <section class="section">
+      <div class="container">
+        <ul class="info-cards">
+          <li class="info-card reveal"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><div><h3>Response time</h3><p>Usually within one working day.</p></div></li>
+          <li class="info-card reveal"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg><div><h3>Location</h3><p>Your City, Country · UTC+7</p></div></li>
+          <li class="info-card reveal"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></svg><div><h3>Open to</h3><p>Full-time roles, contracts and consulting.</p></div></li>
+        </ul>
+
+        <div class="contact card reveal">
+          <div class="contact__copy">
+            <h2>Send a <em>message</em></h2>
+            <p class="muted">Open to full-time roles, contracts and interesting IT problems. I usually reply within a day.</p>
+            <ul class="contact__links">
+              <li><a href="mailto:you@example.com"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5h18v14H3z"/><path d="M3 6l9 7 9-7"/></svg>you@example.com</a>
+                <button class="copy-btn" data-copy="you@example.com" aria-label="Copy email address">Copy</button></li>
+              <li><a href="https://www.linkedin.com/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M8 10v7M8 7v.01M12 17v-4a2 2 0 0 1 4 0v4M12 10v7"/></svg>LinkedIn</a></li>
+              <li><a href="https://github.com/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 19c-4 1.5-4-2-6-2.5M15 21v-3.5a3 3 0 0 0-.9-2.3c3-.3 6.1-1.5 6.1-6.6A5.2 5.2 0 0 0 18.8 5 4.8 4.8 0 0 0 18.7 1.5S17.6 1.2 15 3a12.4 12.4 0 0 0-6 0C6.4 1.2 5.3 1.5 5.3 1.5A4.8 4.8 0 0 0 5.2 5a5.2 5.2 0 0 0-1.4 3.6c0 5.1 3.1 6.3 6.1 6.6a3 3 0 0 0-.9 2.3V21"/></svg>GitHub</a></li>
+            </ul>
+          </div>
+
+          <form class="form" id="contact-form" novalidate>
+            <div class="field">
+              <label for="f-name">Name</label>
+              <input id="f-name" name="name" type="text" autocomplete="name" required placeholder="Jane Doe">
+            </div>
+            <div class="field">
+              <label for="f-email">Email</label>
+              <input id="f-email" name="email" type="email" autocomplete="email" required placeholder="jane@company.com">
+            </div>
+            <div class="field">
+              <label for="f-msg">Message</label>
+              <textarea id="f-msg" name="message" rows="4" required placeholder="Tell me about the role or project…"></textarea>
+            </div>
+            <button class="btn btn--primary btn--block" type="submit">
+              Send message
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12l16-8-6 16-2-7z"/></svg>
+            </button>
+            <p class="form__note" id="form-note" role="status" aria-live="polite"></p>
+          </form>
+        </div>
+      </div>
+    </section>
+    <span id="page-end"></span>
+  </main>
+
+  <script>SITE.footer()</script>
+  <script src="script.js"></script>
+</body>
+</html>
