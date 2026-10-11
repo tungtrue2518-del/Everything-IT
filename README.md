@@ -14,7 +14,7 @@ Settings → Pages → Source: **Deploy from a branch** → choose the branch an
 | `about.html` | Bio, skills, testimonials |
 | `experience.html` | Work timeline and certifications |
 | `projects.html` | All projects with filters |
-| `project-*.html` | One case study per project (overview, challenge, steps, results, lessons) |
+| `project.html` | Case study page; shows the project named after `#` (for example `project.html#backup-dr`) |
 | `gallery.html` | Photo gallery of your work with filters and a full-screen viewer |
 | `scripts.html` | Script library with copy buttons and language filters |
 | `contact.html` | Contact details and form |
@@ -24,17 +24,17 @@ Settings → Pages → Source: **Deploy from a branch** → choose the branch an
 Moving between pages slides left or right depending on direction, and a project card's picture and title
 morph into its case study page (Chrome, Edge and Safari 18+). Other browsers get a simple fade.
 Switching theme or accent color spreads out in a circle from the button, and filters glide cards into place.
-To add a page to the slide order, add it to `ORDER` at the top of `transitions.js`.
+The slide order follows the menu order in `site.js`.
 
 ## Make it yours
-- **Your name, email and links** appear on every page. Use *Find and replace in files* in your editor
-  (for example VS Code: `Ctrl+Shift+H`) to replace `Your Name`, `you@example.com`, `Company Name`,
-  `University Name`, and the LinkedIn / GitHub links.
-- **Email used by the copy button and command menu:** edit `SITE.email` at the top of `script.js`.
+- **Your name, initials, email and links:** edit them once at the top of `site.js`. The menu, footer and
+  command menu on every page use them.
+- **Text inside pages** (hero, about, resume, page titles) still says `Your Name`, `Company Name` and so on.
+  Use *Find and replace in files* in your editor (for example VS Code: `Ctrl+Shift+H`) for those.
 - **Photo:** in `about.html`, replace `<span>YN</span>` inside `.avatar` with `<img src="photo.jpg" alt="Your Name">`.
-- **Projects:** each project has a card in `projects.html` (and three on `index.html`) plus its own
-  `project-*.html` page. To add one, copy an existing case study file, edit it, add a card, and add it to
-  `SITE.projects` in `script.js` so it shows up in the command menu.
+- **Projects:** all projects live in one list, `SITE.projects` in `site.js`. Each entry fills its card on
+  `projects.html`, its case study on `project.html`, and the command menu. Set `featured: true` to show it on
+  the home page. To add a project, copy one entry and edit it; no new file is needed.
 - **Scripts:** in `scripts.html`, copy one `<article class="script-card">` block per script. Set `data-cat`
   and the badge to `powershell`, `python` or `bash` so the filters work.
 - **Resume:** edit the text in `resume.html`. It prints on one A4 / Letter page.
@@ -55,10 +55,11 @@ To add a page to the slide order, add it to `ORDER` at the top of `transitions.j
 Lines marked ✏️ in the HTML show where to edit.
 
 ## Files
-- `*.html`: the pages
+- `*.html`: the pages (each holds only its own content)
+- `site.js`: your details, the menu, the footer and the projects list, shared by every page
 - `styles.css`: design system (light/dark themes, layout, animation, page transitions, print styles)
-- `transitions.js`: page-to-page transitions (slide direction, card-to-case-study morph, fallback fade)
-- `script.js`: site settings (`SITE`), theme + accent switcher, command menu, animations, filters,
+- `transitions.js`: saved theme, page-to-page transitions (slide direction, card-to-case-study morph, fallback fade)
+- `script.js`: theme + accent switcher, command menu, animations, filters,
   copy buttons, contact form
 
 ## Keyboard shortcuts

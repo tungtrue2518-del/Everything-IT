@@ -1,22 +1,5 @@
-/* Portfolio — interactions (no dependencies). Shared by every page. */
-
-/* ✏️ Site settings: edit these once and they apply on every page */
-const SITE = {
-  email: 'you@example.com',
-  pages: [
-    ['index.html', 'Home'], ['about.html', 'About'], ['experience.html', 'Experience'],
-    ['projects.html', 'Projects'], ['gallery.html', 'Gallery'], ['scripts.html', 'Scripts'], ['contact.html', 'Contact'], ['resume.html', 'Resume'],
-  ],
-  projects: [
-    ['project-m365-migration.html', 'Microsoft 365 Migration'],
-    ['project-user-lifecycle-toolkit.html', 'User Lifecycle Toolkit'],
-    ['project-network-redesign.html', 'Office Network Redesign'],
-    ['project-backup-dr.html', 'Backup & DR Overhaul'],
-    ['project-zero-touch-rollout.html', 'Zero-Touch Device Rollout'],
-    ['project-monitoring-stack.html', 'Monitoring & Alerting Stack'],
-  ],
-};
-
+/* Portfolio — interactions (no dependencies). Shared by every page.
+   Site details (name, email, menu, projects) live in site.js as SITE. */
 (() => {
   const root = document.documentElement;
   root.classList.add('js');
@@ -397,6 +380,18 @@ const SITE = {
 
   /* ---------- Case study: highlight current section in "On this page" ---------- */
   const tocLinks = $$('.case__toc a');
+  // Scroll without touching the address: the part after # names the project being shown
+  tocLinks.forEach(a => a.addEventListener('click', e => {
+    e.preventDefault();
+    $(a.getAttribute('href'))?.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth' });
+  }));
+  // Previous / Next (or the Back button) changes the project id after # on the same page: show that project
+  if ($('#case')) {
+    history.scrollRestoration = 'manual'; // a newly shown project always starts at the top
+    addEventListener('hashchange', () => {
+      if (SITE.projects.some(p => p.id === location.hash.slice(1))) location.reload();
+    });
+  }
   if (tocLinks.length) {
     const tocObs = new IntersectionObserver(entries => {
       entries.forEach(en => {
@@ -458,12 +453,12 @@ const SITE = {
     print: '<path d="M6 9V3h12v6M6 18H4v-7h16v7h-2M8 14h8v7H8z"/>',
     dot: '<circle cx="12" cy="12" r="5"/>',
   };
-  const here = location.pathname.split('/').pop() || 'index.html';
+  const here = (location.pathname.split('/').pop() || 'index.html') + (location.pathname.endsWith('project.html') ? location.hash : '');
   const go = href => () => { location.href = href; };
   const commands = [
     ...SITE.pages.filter(([href]) => href !== here)
       .map(([href, label]) => ({ group: 'Pages', label, icon: 'go', run: go(href) })),
-    ...SITE.projects.filter(([href]) => href !== here)
+    ...SITE.projects.map(p => [`project.html#${p.id}`, p.title]).filter(([href]) => href !== here)
       .map(([href, label]) => ({ group: 'Projects', label, icon: 'go', run: go(href) })),
     { group: 'Actions', label: 'Toggle light / dark theme', icon: 'theme', hint: 'T', run: toggleTheme },
     { group: 'Actions', label: 'Copy email address', icon: 'copy', run: copyEmail },
