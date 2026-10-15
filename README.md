@@ -26,6 +26,11 @@ morph into its case study page (Chrome, Edge and Safari 18+). Other browsers get
 Switching theme or accent color spreads out in a circle from the button, and filters glide cards into place.
 The slide order follows the menu order in `site.js`.
 
+Other motion: the home terminal types its lines, the hero name and section labels decode like a terminal,
+cards tilt toward the pointer, icons draw their outlines, buttons ripple, the tech strip speeds up while
+scrolling, and the hero, project pictures and footer move with the scroll (newer browsers). Everything
+switches off for visitors who set "reduce motion" on their device.
+
 ## Make it yours
 - **Your name, initials, email and links:** edit them once at the top of `site.js`. The menu, footer and
   command menu on every page use them.

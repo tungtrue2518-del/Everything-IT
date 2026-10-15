@@ -341,11 +341,12 @@ main, .footer, .nav { position: relative; z-index: 2; }
   padding: 26px; box-shadow: var(--shadow); overflow: hidden;
   transition: transform .3s var(--ease), border-color .3s, box-shadow .3s var(--ease);
 }
-.card::after, .skill-card::after, .project::after, .cert::after {
+.card::after, .skill-card::after, .project::after, .cert::after, .tquote::after, .info-card::after {
   content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; opacity: 0; transition: opacity .3s;
   background: radial-gradient(360px circle at var(--x, 50%) var(--y, 50%), var(--accent-soft), transparent 60%);
 }
-.card:hover::after, .skill-card:hover::after, .project:hover::after, .cert:hover::after { opacity: 1; }
+.card:hover::after, .skill-card:hover::after, .project:hover::after, .cert:hover::after, .tquote:hover::after, .info-card:hover::after { opacity: 1; }
+.info-card { position: relative; overflow: hidden; }
 .card__title { margin-bottom: 16px; }
 
 /* ---------- About (bento) ---------- */
@@ -1272,3 +1273,57 @@ img.shot__media { display: block; width: 100%; height: auto; }
   .strip__item:nth-child(even) { transform: none; }
 }
 @media print { .lightbox, .section--strip { display: none !important; } }
+
+/* =========================================================
+   More motion: typing terminal, tilt, self-drawing icons,
+   ripples and scroll-linked parallax
+   ========================================================= */
+/* Terminal lines type out one after another */
+.tl { display: inline-block; }
+.js .terminal .tl { clip-path: inset(0 100% 0 0); }
+.js .terminal.is-in:not(.tl-wait) .tl { animation: tl-type .5s steps(26, end) forwards; animation-delay: calc(var(--l) * .3s + .2s); }
+@keyframes tl-type { to { clip-path: inset(0 0 0 0); } }
+
+/* Cards follow the pointer quickly while tilting */
+.is-tilting { transition-duration: .15s !important; transition-delay: 0s !important; will-change: transform; }
+
+/* Icons draw their outline, then pop on hover */
+.js .reveal .draw :is(path, circle, rect, line, polyline) {
+  stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset 1.4s var(--ease) .25s;
+}
+.js .reveal.is-in .draw :is(path, circle, rect, line, polyline) { stroke-dashoffset: 0; }
+.skill-card:hover .skill-card__icon svg, .explore__card:hover .explore__icon svg, .info-card:hover > svg {
+  animation: icon-pop .6s cubic-bezier(.3, 1.6, .5, 1);
+}
+@keyframes icon-pop { 35% { transform: scale(1.22) rotate(-8deg); } 70% { transform: scale(.95) rotate(4deg); } }
+
+/* Ripple from the press point */
+.btn, .filter, .icon-btn { position: relative; overflow: hidden; }
+.ripple {
+  position: absolute; border-radius: 50%; background: currentColor; opacity: .28; pointer-events: none;
+  transform: scale(0); animation: ripple .65s ease-out forwards;
+}
+@keyframes ripple { to { transform: scale(1); opacity: 0; } }
+
+/* Scroll-linked parallax (browsers with scroll-driven animations; others simply skip it) */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .hero:not(.hero--page) .hero__copy { animation: par-up linear both; animation-timeline: scroll(root); animation-range: 0 75vh; }
+    .hero:not(.hero--page) .hero__visual { animation: par-down linear both; animation-timeline: scroll(root); animation-range: 0 85vh; }
+    .hero--page > .container { animation: par-up-soft linear both; animation-timeline: scroll(root); animation-range: 0 60vh; }
+    .project__thumb .mock { animation: mock-float linear both; animation-timeline: view(); }
+    .footer__word { animation: word-rise linear both; animation-timeline: view(); animation-range: entry 0% entry 100%; }
+    .stats { animation: stats-in linear both; animation-timeline: view(); animation-range: entry 0% cover 30%; }
+  }
+}
+@keyframes par-up { to { translate: 0 -70px; opacity: .1; } }
+@keyframes par-up-soft { to { translate: 0 -40px; opacity: .3; } }
+@keyframes par-down { to { translate: 0 90px; scale: .94; opacity: .35; } }
+@keyframes mock-float { from { translate: 0 26px; } to { translate: 0 -26px; } }
+@keyframes word-rise { from { translate: 0 45%; opacity: 0; } }
+@keyframes stats-in { from { scale: .94; opacity: .4; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .js .terminal .tl { clip-path: none; animation: none; }
+  .js .reveal .draw :is(path, circle, rect, line, polyline) { stroke-dashoffset: 0; }
+}

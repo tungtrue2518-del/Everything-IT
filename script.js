@@ -20,6 +20,25 @@
     toastTimer = setTimeout(() => toast.classList.remove('is-on'), 2200);
   };
 
+  /* ---------- Hacker-style text scramble: letters cycle through symbols, then settle ---------- */
+  const GLYPHS = '!<>-_\\/[]{}=+*^?#01';
+  const scramble = (el, duration = 700) => {
+    if (reduceMotion || el.dataset.scrambling) return;
+    const text = el.dataset.text ??= el.textContent;
+    el.dataset.scrambling = '1';
+    const start = performance.now();
+    const tick = now => {
+      const p = Math.min((now - start) / duration, 1), settled = Math.floor(p * text.length);
+      el.textContent = [...text].map((c, i) => (i < settled || c === ' ' ? c : GLYPHS[Math.random() * GLYPHS.length | 0])).join('');
+      if (p < 1) requestAnimationFrame(tick);
+      else { el.textContent = text; delete el.dataset.scrambling; }
+    };
+    requestAnimationFrame(tick);
+  };
+  // Run something once the boot intro (if any) has finished
+  const afterBoot = [];
+  const whenBooted = fn => (root.classList.contains('is-booting') ? afterBoot.push(fn) : fn());
+
   /* ---------- Boot intro ---------- */
   if (root.classList.contains('is-booting') && !$('#boot')) root.classList.remove('is-booting');
   if (root.classList.contains('is-booting')) {
@@ -37,7 +56,7 @@
     }, 120 + i * 230));
     setTimeout(() => {
       boot.classList.add('is-done');
-      setTimeout(() => root.classList.remove('is-booting'), 700);
+      setTimeout(() => { root.classList.remove('is-booting'); afterBoot.splice(0).forEach(fn => fn()); }, 700);
       try { sessionStorage.setItem('booted', '1'); } catch (e) {}
     }, 120 + lines.length * 230 + 250);
   }
@@ -160,6 +179,8 @@
       const siblings = $$(':scope > .reveal', en.target.parentElement);
       en.target.style.transitionDelay = Math.min(Math.max(siblings.indexOf(en.target), 0), 6) * 70 + 'ms';
       en.target.classList.add('is-in');
+      [...en.target.querySelectorAll('.eyebrow'), ...(en.target.matches('.eyebrow') ? [en.target] : [])]
+        .forEach(el => scramble(el, 600));
       revealObs.unobserve(en.target);
     });
   }, { threshold: 0.12 });
@@ -289,15 +310,31 @@
       });
     });
 
-    $$('.tilt').forEach(el => {
+    // 3D tilt toward the pointer: the terminal card leans more, content cards lean a little and lift
+    $$('.tilt, .project, .explore__card, .cert, .skill-card, .tquote, .info-card').forEach(el => {
+      const max = el.classList.contains('tilt') ? 10 : 6, lift = el.classList.contains('tilt') ? 0 : -4;
       el.addEventListener('pointermove', e => {
         const r = el.getBoundingClientRect();
         const x = (e.clientX - r.left) / r.width - 0.5;
         const y = (e.clientY - r.top) / r.height - 0.5;
-        el.style.transform = `perspective(900px) rotateY(${x * 10}deg) rotateX(${-y * 10}deg)`;
+        el.classList.add('is-tilting');
+        el.style.transform = `perspective(900px) rotateY(${x * max}deg) rotateX(${-y * max}deg) translateY(${lift}px)`;
       });
-      el.addEventListener('pointerleave', () => { el.style.transform = ''; });
+      el.addEventListener('pointerleave', () => { el.classList.remove('is-tilting'); el.style.transform = ''; });
     });
+    $$('.tquote, .info-card').forEach(el => {
+      el.addEventListener('pointermove', e => {
+        const r = el.getBoundingClientRect();
+        el.style.setProperty('--x', e.clientX - r.left + 'px');
+        el.style.setProperty('--y', e.clientY - r.top + 'px');
+      });
+    });
+
+    // Menu links scramble when hovered (width is locked so the menu doesn't jiggle)
+    $$('.nav__links a').forEach(a => a.addEventListener('mouseenter', () => {
+      a.style.minWidth = a.offsetWidth + 'px';
+      scramble(a, 420);
+    }));
 
     $$('.btn, .icon-btn').forEach(el => {
       el.addEventListener('pointermove', e => {
@@ -324,6 +361,53 @@
     addEventListener('pointerdown', () => ring.classList.add('is-down'));
     addEventListener('pointerup', () => ring.classList.remove('is-down'));
     document.addEventListener('pointerleave', () => ring.classList.remove('is-on'));
+  }
+
+  /* ---------- More motion ---------- */
+  if (!reduceMotion) {
+    // Hero name decodes itself and the terminal types its lines, once the boot intro is out of the way
+    const term = $('.terminal');
+    term?.classList.add('tl-wait');
+    whenBooted(() => {
+      term?.classList.remove('tl-wait');
+      const name = $('.hero__title .grad');
+      if (name) setTimeout(() => scramble(name, 900), 150);
+    });
+
+    // Icons draw their own outline when their card scrolls into view
+    $$('.skill-card__icon svg, .explore__icon svg, .info-card > svg, .project__thumb > svg').forEach(icon => {
+      icon.classList.add('draw');
+      icon.querySelectorAll('path, circle, rect, line, polyline').forEach(shape => shape.setAttribute('pathLength', '1'));
+    });
+
+    // Buttons send a ripple out from where they were pressed
+    document.addEventListener('pointerdown', e => {
+      const btn = e.target.closest('.btn, .filter, .icon-btn');
+      if (!btn) return;
+      const r = btn.getBoundingClientRect(), size = Math.max(r.width, r.height) * 2;
+      const wave = document.createElement('span');
+      wave.className = 'ripple';
+      wave.style.cssText = `width:${size}px;height:${size}px;left:${e.clientX - r.left - size / 2}px;top:${e.clientY - r.top - size / 2}px`;
+      btn.append(wave);
+      wave.addEventListener('animationend', () => wave.remove());
+    });
+
+    // The tech strip speeds up while the page scrolls, then eases back
+    const strip = $('.marquee__track')?.getAnimations()[0];
+    if (strip) {
+      let lastY = scrollY, boost = 0, running = false;
+      const ease = () => {
+        boost *= 0.92;
+        strip.playbackRate = 1 + boost;
+        running = boost > 0.02;
+        if (running) requestAnimationFrame(ease); else strip.playbackRate = 1;
+      };
+      addEventListener('scroll', () => {
+        boost = Math.min(boost + Math.abs(scrollY - lastY) * 0.04, 6);
+        lastY = scrollY;
+        if (!running) { running = true; requestAnimationFrame(ease); }
+      }, { passive: true });
+    }
   }
 
   /* ---------- Activity heatmap (decorative sample) ---------- */
