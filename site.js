@@ -155,7 +155,6 @@ const SITE = {
   const links = SITE.pages.filter(([h]) => h !== 'index.html' && h !== 'resume.html')
     .map(([h, t]) => `<a href="${h}"${h === active ? ' class="is-active" aria-current="page"' : ''}>${t}</a>`).join('');
   put(`
-  <div class="cursor-ring" aria-hidden="true"></div>
   <div class="grain" aria-hidden="true"></div>
   <div class="spotlight" aria-hidden="true"></div>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -167,18 +166,6 @@ const SITE = {
         <button class="kbd-btn" id="cmdk-open" type="button" aria-label="Open command menu" title="Command menu">
           <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><span>Search</span><kbd>⌘K</kbd>
         </button>
-        <div class="swatch-wrap">
-          <button class="icon-btn" id="accent-btn" aria-label="Change accent color" aria-expanded="false" aria-controls="accent-menu" title="Accent color">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 1 0 0 18c1 0 1.5-.8 1.5-1.5 0-.4-.2-.8-.4-1.1-.3-.3-.4-.6-.4-1 0-.8.7-1.4 1.5-1.4H16a5 5 0 0 0 5-5C21 6.5 17 3 12 3z"/><circle cx="7.5" cy="11" r="1"/><circle cx="10.5" cy="7.5" r="1"/><circle cx="15" cy="7.5" r="1"/></svg>
-          </button>
-          <div class="swatches" id="accent-menu" role="menu" hidden>
-            <p>Accent</p>
-            <button role="menuitemradio" data-accent="indigo" aria-label="Indigo" style="--sw:#6d6dfa"></button>
-            <button role="menuitemradio" data-accent="emerald" aria-label="Emerald" style="--sw:#10b981"></button>
-            <button role="menuitemradio" data-accent="sunset" aria-label="Sunset" style="--sw:#f97362"></button>
-            <button role="menuitemradio" data-accent="ocean" aria-label="Ocean" style="--sw:#0ea5e9"></button>
-          </div>
-        </div>
         <button class="icon-btn" id="theme-toggle" aria-label="Toggle color theme" title="Toggle theme">
           <svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
           <svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
@@ -197,7 +184,7 @@ const SITE = {
   <footer class="footer">
     <div class="container">
       <div class="footer__top-row">
-        <a href="contact.html" class="footer__cta">Let's work together <span aria-hidden="true">↗</span></a>
+        <a href="contact.html" class="footer__cta">Contact <span aria-hidden="true">↗</span></a>
         <nav class="footer__links" aria-label="Footer">
           ${SITE.pages.filter(([h]) => h !== 'index.html').map(([h, t]) => `<a href="${h}">${t}</a>`).join('')}
           ${SITE.linkedin ? `<a href="${SITE.linkedin}" target="_blank" rel="noopener">LinkedIn</a>` : ''}
@@ -206,7 +193,7 @@ const SITE = {
       </div>
       <p class="footer__word" aria-hidden="true">${esc(SITE.name)}</p>
       <div class="footer__inner">
-        <p>© <span id="year"></span> ${esc(SITE.name)}. Built with care.</p>
+        <p>© <span id="year"></span> ${esc(SITE.name)}. All rights reserved.</p>
         <p class="footer__hint">Tip: press <kbd>⌘K</kbd> to jump anywhere · <kbd>T</kbd> toggles theme</p>
       </div>
     </div>

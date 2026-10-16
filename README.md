@@ -23,20 +23,19 @@ Settings → Pages → Source: **Deploy from a branch** → choose the branch an
 
 Moving between pages slides left or right depending on direction, and a project card's picture and title
 morph into its case study page (Chrome, Edge and Safari 18+). Other browsers get a simple fade.
-Switching theme or accent color spreads out in a circle from the button, and filters glide cards into place.
+The site opens in light mode; switching to dark spreads out in a circle from the button, and filters glide cards into place.
 The slide order follows the menu order in `site.js`.
 
-Other motion: the home terminal types its lines, the hero name and section labels decode like a terminal,
-cards tilt toward the pointer, icons draw their outlines, buttons ripple, the tech strip speeds up while
-scrolling, and the hero, project pictures and footer move with the scroll (newer browsers). Everything
+Other motion: headings rise in word by word, cards tilt gently toward the pointer, icons draw their
+outlines, buttons ripple, the tech strip speeds up while scrolling, and the hero, project pictures and footer move with the scroll (newer browsers). Everything
 switches off for visitors who set "reduce motion" on their device.
 
 ## Make it yours
 - **Your name, initials, email and links:** edit them once at the top of `site.js`. The menu, footer and
   command menu on every page use them.
-- **Text inside pages** (hero, about, resume, page titles) still says `Your Name`, `Company Name` and so on.
+- **Text inside pages** (hero, about, resume, page titles) still has samples such as `Your City, Country` and `Company Name`.
   Use *Find and replace in files* in your editor (for example VS Code: `Ctrl+Shift+H`) for those.
-- **Photo:** in `about.html`, replace `<span>YN</span>` inside `.avatar` with `<img src="photo.jpg" alt="Your Name">`.
+- **Photo:** in `about.html`, replace `<span>PL</span>` inside `.avatar` with `<img src="photo.jpg" alt="Purinat Lexuthai">`.
 - **Projects:** all projects live in one list, `SITE.projects` in `site.js`. Each entry fills its card on
   `projects.html`, its case study on `project.html`, and the command menu. Set `featured: true` to show it on
   the home page. To add a project, copy one entry and edit it; no new file is needed.
@@ -51,8 +50,8 @@ switches off for visitors who set "reduce motion" on their device.
   3. Edit the caption (category, title, place · year) and set `data-cat` to `infra`, `network`, `support`,
      `people` or `awards` so the filters work. Add or delete `<figure>` blocks freely; any photo shape works.
   4. The "Behind the scenes" strip on the home page uses the same kind of tiles; swap those too.
-- **Colors:** pick a preset with the palette button in the nav (Indigo, Emerald, Sunset, Ocean), or edit the
-  `--a1-l / --a2-l / --a3-l` (light) and `--a1-d / --a2-d / --a3-d` (dark) values at the top of `styles.css`.
+- **Colors:** the site uses a navy palette. Edit the `--a1-l / --a2-l / --a3-l` (light) and
+  `--a1-d / --a2-d / --a3-d` (dark) values at the top of `styles.css` to change it.
 - **Testimonials, heatmap and case study text** are samples. Replace them or delete those blocks.
 - **Contact form:** opens the visitor's email app. To receive messages directly, point the form at a
   service such as Formspree.
@@ -64,7 +63,7 @@ Lines marked ✏️ in the HTML show where to edit.
 - `site.js`: your details, the menu, the footer and the projects list, shared by every page
 - `styles.css`: design system (light/dark themes, layout, animation, page transitions, print styles)
 - `transitions.js`: saved theme, page-to-page transitions (slide direction, card-to-case-study morph, fallback fade)
-- `script.js`: theme + accent switcher, command menu, animations, filters,
+- `script.js`: light/dark switch, command menu, animations, filters,
   copy buttons, contact form
 
 ## Keyboard shortcuts

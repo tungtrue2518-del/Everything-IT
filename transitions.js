@@ -1,5 +1,5 @@
 /* Loaded in <head> on every page, before anything paints.
-   - Applies the saved theme and accent colour (no flash of the wrong theme).
+   - Applies the saved theme (no flash of the wrong theme).
    - Page-to-page transitions: slide left going forward through the menu order, right going back;
      a project card's picture and title morph into its case study (and back).
    - Browsers without cross-page View Transitions get a simple fade-out / fade-in instead. */
@@ -13,11 +13,9 @@
     return f === 'project.html' ? f + u.hash : f;
   };
 
-  // Saved theme / accent, and the boot intro on the first visit to the home page
+  // Saved theme (light unless the visitor chose dark)
   try {
     const t = localStorage.getItem('theme'); if (t) root.dataset.theme = t;
-    const a = localStorage.getItem('accent'); if (a) root.dataset.accent = a;
-    if (file(location.href) === 'index.html' && !sessionStorage.getItem('booted') && !reduceMotion) root.classList.add('is-booting');
   } catch (e) {}
 
   // Slide order = menu order from site.js, with every project right after Projects

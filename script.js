@@ -20,55 +20,13 @@
     toastTimer = setTimeout(() => toast.classList.remove('is-on'), 2200);
   };
 
-  /* ---------- Hacker-style text scramble: letters cycle through symbols, then settle ---------- */
-  const GLYPHS = '!<>-_\\/[]{}=+*^?#01';
-  const scramble = (el, duration = 700) => {
-    if (reduceMotion || el.dataset.scrambling) return;
-    const text = el.dataset.text ??= el.textContent;
-    el.dataset.scrambling = '1';
-    const start = performance.now();
-    const tick = now => {
-      const p = Math.min((now - start) / duration, 1), settled = Math.floor(p * text.length);
-      el.textContent = [...text].map((c, i) => (i < settled || c === ' ' ? c : GLYPHS[Math.random() * GLYPHS.length | 0])).join('');
-      if (p < 1) requestAnimationFrame(tick);
-      else { el.textContent = text; delete el.dataset.scrambling; }
-    };
-    requestAnimationFrame(tick);
-  };
-  // Run something once the boot intro (if any) has finished
-  const afterBoot = [];
-  const whenBooted = fn => (root.classList.contains('is-booting') ? afterBoot.push(fn) : fn());
-
-  /* ---------- Boot intro ---------- */
-  if (root.classList.contains('is-booting') && !$('#boot')) root.classList.remove('is-booting');
-  if (root.classList.contains('is-booting')) {
-    const boot = $('#boot'), log = $('#boot-log'), bar = $('.boot__bar span', boot);
-    const lines = [
-      'initializing portfolio…',
-      'mounting /experience ........ <b>ok</b>',
-      'loading skills.json ......... <b>ok</b>',
-      'starting network services ... <b>ok</b>',
-      'welcome.',
-    ];
-    lines.forEach((line, i) => setTimeout(() => {
-      log.innerHTML += line + '\n';
-      bar.style.width = ((i + 1) / lines.length) * 100 + '%';
-    }, 120 + i * 230));
-    setTimeout(() => {
-      boot.classList.add('is-done');
-      setTimeout(() => { root.classList.remove('is-booting'); afterBoot.splice(0).forEach(fn => fn()); }, 700);
-      try { sessionStorage.setItem('booted', '1'); } catch (e) {}
-    }, 120 + lines.length * 230 + 250);
-  }
-
-  /* ---------- Theme + accent ---------- */
+  /* ---------- Theme (light by default, dark on request) ---------- */
   const listeners = [];
   const onColorsChange = fn => listeners.push(fn);
   const colorsChanged = () => listeners.forEach(fn => fn());
 
-  const isDark = () => (root.dataset.theme ||
-    (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')) === 'dark';
-  // Colour changes spread out in a circle from the button that was pressed
+  const isDark = () => root.dataset.theme === 'dark';
+  // The theme change spreads out in a circle from the button that was pressed
   const ripple = (from, update) => {
     if (!document.startViewTransition || reduceMotion) { update(); return; }
     const r = (from || $('#theme-toggle')).getBoundingClientRect();
@@ -89,26 +47,6 @@
     colorsChanged();
   });
   $('#theme-toggle').addEventListener('click', e => toggleTheme(e.currentTarget));
-  matchMedia('(prefers-color-scheme: dark)').addEventListener('change', colorsChanged);
-
-  const accentBtn = $('#accent-btn');
-  const accentMenu = $('#accent-menu');
-  const setAccent = (name, from) => ripple(from || accentBtn, () => {
-    if (name === 'indigo') delete root.dataset.accent; else root.dataset.accent = name;
-    store('accent', name);
-    $$('button', accentMenu).forEach(b => b.setAttribute('aria-checked', String(b.dataset.accent === name)));
-    colorsChanged();
-  });
-  $$('button', accentMenu).forEach(b => {
-    b.setAttribute('aria-checked', String(b.dataset.accent === (root.dataset.accent || 'indigo')));
-    b.addEventListener('click', () => { setAccent(b.dataset.accent, b); setAccentMenu(false); });
-  });
-  const setAccentMenu = open => {
-    accentMenu.hidden = !open;
-    accentBtn.setAttribute('aria-expanded', String(open));
-  };
-  accentBtn.addEventListener('click', e => { e.stopPropagation(); setAccentMenu(accentMenu.hidden); });
-  document.addEventListener('click', e => { if (!accentMenu.hidden && !accentMenu.contains(e.target)) setAccentMenu(false); });
 
   /* ---------- Mobile menu ---------- */
   const burger = $('#nav-burger');
@@ -120,7 +58,7 @@
   burger.addEventListener('click', () => setMenu(!links.classList.contains('is-open')));
   $$('a', links).forEach(a => a.addEventListener('click', () => setMenu(false)));
   document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') { setMenu(false); setAccentMenu(false); }
+    if (e.key === 'Escape') { setMenu(false); }
   });
 
   /* ---------- Scroll: nav border, progress bar, back-to-top ---------- */
@@ -179,8 +117,6 @@
       const siblings = $$(':scope > .reveal', en.target.parentElement);
       en.target.style.transitionDelay = Math.min(Math.max(siblings.indexOf(en.target), 0), 6) * 70 + 'ms';
       en.target.classList.add('is-in');
-      [...en.target.querySelectorAll('.eyebrow'), ...(en.target.matches('.eyebrow') ? [en.target] : [])]
-        .forEach(el => scramble(el, 600));
       revealObs.unobserve(en.target);
     });
   }, { threshold: 0.12 });
@@ -203,24 +139,6 @@
     });
   }, { threshold: 0.5 });
   $$('.count').forEach(el => countObs.observe(el));
-
-  /* ---------- Typing effect ---------- */
-  const typed = $('#typed');
-  if (typed && !reduceMotion) {
-    const words = JSON.parse(typed.dataset.words);
-    let w = 0, i = words[0].length, deleting = true;
-    const step = () => {
-      typed.textContent = words[w].slice(0, i);
-      if (deleting) {
-        if (i-- === 0) { deleting = false; w = (w + 1) % words.length; i = 0; }
-      } else if (i++ === words[w].length) {
-        deleting = true;
-        return setTimeout(step, 1800);
-      }
-      setTimeout(step, deleting ? 45 : 85);
-    };
-    setTimeout(step, 2600);
-  }
 
   /* ---------- Hero network canvas ---------- */
   const canvas = $('#net');
@@ -295,7 +213,7 @@
     }
   }
 
-  /* ---------- Pointer effects: spotlight, card glow, tilt, magnet, cursor ring ---------- */
+  /* ---------- Pointer effects: spotlight, card glow, tilt, magnetic buttons ---------- */
   if (finePointer && !reduceMotion) {
     addEventListener('pointermove', e => {
       root.style.setProperty('--mx', e.clientX + 'px');
@@ -310,9 +228,9 @@
       });
     });
 
-    // 3D tilt toward the pointer: the terminal card leans more, content cards lean a little and lift
+    // Gentle 3D tilt toward the pointer; content cards also lift a little
     $$('.tilt, .project, .explore__card, .cert, .skill-card, .tquote, .info-card').forEach(el => {
-      const max = el.classList.contains('tilt') ? 10 : 6, lift = el.classList.contains('tilt') ? 0 : -4;
+      const max = el.classList.contains('tilt') ? 4 : 3, lift = el.classList.contains('tilt') ? 0 : -3;
       el.addEventListener('pointermove', e => {
         const r = el.getBoundingClientRect();
         const x = (e.clientX - r.left) / r.width - 0.5;
@@ -330,12 +248,6 @@
       });
     });
 
-    // Menu links scramble when hovered (width is locked so the menu doesn't jiggle)
-    $$('.nav__links a').forEach(a => a.addEventListener('mouseenter', () => {
-      a.style.minWidth = a.offsetWidth + 'px';
-      scramble(a, 420);
-    }));
-
     $$('.btn, .icon-btn').forEach(el => {
       el.addEventListener('pointermove', e => {
         const r = el.getBoundingClientRect();
@@ -344,36 +256,10 @@
       });
       el.addEventListener('pointerleave', () => { el.style.transform = ''; });
     });
-
-    const ring = $('.cursor-ring');
-    let rx = 0, ry = 0, tx = 0, ty = 0, ringRaf = 0;
-    const follow = () => {
-      rx += (tx - rx) * 0.2; ry += (ty - ry) * 0.2;
-      ring.style.transform = `translate(${rx}px, ${ry}px)`;
-      ringRaf = Math.abs(tx - rx) + Math.abs(ty - ry) > 0.1 ? requestAnimationFrame(follow) : 0;
-    };
-    addEventListener('pointermove', e => {
-      tx = e.clientX; ty = e.clientY;
-      ring.classList.add('is-on');
-      ring.classList.toggle('is-hover', !!e.target.closest('a, button, .project, input, textarea, [role="option"]'));
-      if (!ringRaf) ringRaf = requestAnimationFrame(follow);
-    }, { passive: true });
-    addEventListener('pointerdown', () => ring.classList.add('is-down'));
-    addEventListener('pointerup', () => ring.classList.remove('is-down'));
-    document.addEventListener('pointerleave', () => ring.classList.remove('is-on'));
   }
 
   /* ---------- More motion ---------- */
   if (!reduceMotion) {
-    // Hero name decodes itself and the terminal types its lines, once the boot intro is out of the way
-    const term = $('.terminal');
-    term?.classList.add('tl-wait');
-    whenBooted(() => {
-      term?.classList.remove('tl-wait');
-      const name = $('.hero__title .grad');
-      if (name) setTimeout(() => scramble(name, 900), 150);
-    });
-
     // Icons draw their own outline when their card scrolls into view
     $$('.skill-card__icon svg, .explore__icon svg, .info-card > svg, .project__thumb > svg').forEach(icon => {
       icon.classList.add('draw');
@@ -535,7 +421,6 @@
     theme: '<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/>',
     copy: '<rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/>',
     print: '<path d="M6 9V3h12v6M6 18H4v-7h16v7h-2M8 14h8v7H8z"/>',
-    dot: '<circle cx="12" cy="12" r="5"/>',
   };
   const here = (location.pathname.split('/').pop() || 'index.html') + (location.pathname.endsWith('project.html') ? location.hash : '');
   const go = href => () => { location.href = href; };
@@ -547,9 +432,6 @@
     { group: 'Actions', label: 'Toggle light / dark theme', icon: 'theme', hint: 'T', run: toggleTheme },
     { group: 'Actions', label: 'Copy email address', icon: 'copy', run: copyEmail },
     { group: 'Actions', label: 'Open printable resume', icon: 'print', run: go('resume.html') },
-    ...['indigo', 'emerald', 'sunset', 'ocean'].map(a => ({
-      group: 'Accent color', label: a[0].toUpperCase() + a.slice(1), icon: 'dot', accent: a, run: () => setAccent(a),
-    })),
   ];
   let visible = [], active = 0;
 
@@ -571,8 +453,7 @@
       li.className = 'cmdk__item'; li.id = 'cmd-' + i;
       li.setAttribute('role', 'option');
       li.setAttribute('aria-selected', String(i === active));
-      const swatch = c.accent ? ` style="color:${$(`[data-accent="${c.accent}"]`, accentMenu).style.getPropertyValue('--sw')}"` : '';
-      li.innerHTML = `<svg viewBox="0 0 24 24" aria-hidden="true"${swatch}>${ICON[c.icon]}</svg><span></span>${c.hint ? `<small>${c.hint}</small>` : ''}`;
+      li.innerHTML = `<svg viewBox="0 0 24 24" aria-hidden="true">${ICON[c.icon]}</svg><span></span>${c.hint ? `<small>${c.hint}</small>` : ''}`;
       li.querySelector('span').textContent = c.label;
       li.addEventListener('click', () => runCmd(i));
       li.addEventListener('pointermove', () => { if (active !== i) { active = i; highlight(); } });
