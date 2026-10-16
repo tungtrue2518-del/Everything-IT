@@ -1,11 +1,11 @@
 /* Shared site content and layout. Loaded at the top of <body> on every page.
    ✏️ Edit your details and projects here once; every page picks them up. */
 const SITE = {
-  name: 'Your Name',
-  initials: 'YN',
-  email: 'you@example.com',
-  linkedin: 'https://www.linkedin.com/',
-  github: 'https://github.com/',
+  name: 'Purinat Lexuthai',
+  initials: 'PL',
+  email: 'tung.true2518@gmail.com',
+  linkedin: '', // ✏️ add your LinkedIn profile link here to show it in the footer
+  github: 'https://github.com/tungtrue2518-del',
 
   // Menu order. It is also the order pages slide in (left = forward).
   pages: [
@@ -200,7 +200,7 @@ const SITE = {
         <a href="contact.html" class="footer__cta">Let's work together <span aria-hidden="true">↗</span></a>
         <nav class="footer__links" aria-label="Footer">
           ${SITE.pages.filter(([h]) => h !== 'index.html').map(([h, t]) => `<a href="${h}">${t}</a>`).join('')}
-          <a href="${SITE.linkedin}" target="_blank" rel="noopener">LinkedIn</a>
+          ${SITE.linkedin ? `<a href="${SITE.linkedin}" target="_blank" rel="noopener">LinkedIn</a>` : ''}
           <a href="${SITE.github}" target="_blank" rel="noopener">GitHub</a>
         </nav>
       </div>

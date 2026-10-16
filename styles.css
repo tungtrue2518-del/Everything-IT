@@ -539,7 +539,7 @@ main, .footer, .nav { position: relative; z-index: 2; }
 .footer__links a:hover { color: var(--text); }
 .footer__word {
   margin: clamp(28px, 5vw, 48px) 0 0; white-space: nowrap; text-align: center; user-select: none;
-  font: 700 clamp(3.5rem, 15.5vw, 13.5rem)/.85 var(--font-display); letter-spacing: -.055em;
+  font: 700 clamp(2.6rem, 12.5vw, 11.5rem)/.85 var(--font-display); letter-spacing: -.055em;
   background: linear-gradient(180deg, var(--text) 0%, transparent 92%); -webkit-background-clip: text; background-clip: text; color: transparent;
   opacity: .13; transition: opacity .5s var(--ease);
 }
