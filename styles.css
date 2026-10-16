@@ -261,9 +261,10 @@ main, .footer, .nav { position: relative; z-index: 2; }
 }
 .marquee__track { display: flex; width: max-content; animation: marquee 40s linear infinite; }
 .marquee:hover .marquee__track { animation-play-state: paused; }
-.marquee ul { display: flex; align-items: center; gap: 28px; padding-right: 28px; }
-.marquee li { font: 500 1.05rem var(--font-display); color: var(--text-2); white-space: nowrap; }
-.marquee li:nth-child(even) { color: var(--accent); font-size: .8rem; }
+.marquee ul { display: flex; align-items: center; gap: 44px; padding-right: 44px; }
+.marquee li { display: flex; align-items: center; gap: 10px; font: 500 1.05rem var(--font-display); color: var(--text-2); white-space: nowrap; }
+.marquee li svg { width: 22px; height: 22px; color: var(--accent); }
+.marquee li svg.si { fill: currentColor; stroke: none; }
 @keyframes marquee { to { transform: translateX(-50%); } }
 
 /* ---------- Sections ---------- */
