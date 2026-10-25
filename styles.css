@@ -31,11 +31,11 @@
 
   --radius: 18px;
   --radius-sm: 10px;
-  --font-sans: "Manrope", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --font-display: "Bricolage Grotesque", "Manrope", system-ui, sans-serif;
+  --font-sans: "Manrope", "IBM Plex Sans Thai", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: "Bricolage Grotesque", "Manrope", "IBM Plex Sans Thai", system-ui, sans-serif;
   --edge: rgba(15, 18, 30, .07);
   --edge-hi: rgba(255, 255, 255, .9);
-  --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, "IBM Plex Sans Thai", monospace;
   --ease: cubic-bezier(.2, .7, .2, 1);
   color-scheme: light;
 }
@@ -576,6 +576,16 @@ kbd {
 .kbd-btn:hover { border-color: var(--border-strong); color: var(--text); }
 .kbd-btn svg { width: 16px; height: 16px; }
 .kbd-btn span { margin-right: 18px; }
+
+/* Nav: language switch (EN / TH) */
+.lang-btn {
+  display: inline-flex; align-items: center; gap: 2px; height: 40px; padding: 0 5px; border-radius: 12px; cursor: pointer;
+  border: 1px solid var(--border); background: var(--surface); color: var(--muted); font: 600 .78rem var(--font-sans);
+  transition: border-color .2s;
+}
+.lang-btn:hover { border-color: var(--border-strong); }
+.lang-btn span { padding: 5px 7px; border-radius: 8px; letter-spacing: .02em; }
+.lang-btn span.is-on { background: var(--accent); color: var(--accent-ink); }
 @keyframes pop { from { opacity: 0; transform: translateY(-4px) scale(.98); } }
 
 /* Heatmap tile */
@@ -1228,3 +1238,13 @@ img.shot__media { display: block; width: 100%; height: auto; }
 .avail dd { margin: 0; font-weight: 600; text-align: right; }
 @media (max-width: 880px) { .summary { grid-template-columns: 1fr; } }
 @media (max-width: 600px) { .competencies { grid-template-columns: 1fr; } }
+
+/* =========================================================
+   Thai: no tracking on Thai glyphs, taller lines for vowel and tone marks
+   ========================================================= */
+:root[lang="th"] body { line-height: 1.75; }
+:root[lang="th"] :is(h1, h2, h3, .hero__title, .page-title, .eyebrow, .footer__cta, .explore__title, .cv h1) { letter-spacing: 0; }
+:root[lang="th"] :is(h1, h2, .hero__title, .page-title) { line-height: 1.3; }
+:root[lang="th"] .hero__title { font-size: clamp(2.4rem, 5.8vw, 4.4rem); }
+:root[lang="th"] .hero__role { line-height: 1.4; }
+:root[lang="th"] .eyebrow { text-transform: none; font-family: var(--font-sans); font-weight: 600; }

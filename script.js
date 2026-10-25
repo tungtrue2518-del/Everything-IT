@@ -9,6 +9,7 @@
   const $$ = (s, el = document) => [...el.querySelectorAll(s)];
   const store = (k, v) => { try { localStorage.setItem(k, v); } catch (e) {} };
   const cssVar = name => getComputedStyle(root).getPropertyValue(name).trim();
+  const { t } = SITE;
 
   /* ---------- Toast ---------- */
   const toast = $('#toast');
@@ -47,6 +48,13 @@
     colorsChanged();
   });
   $('#theme-toggle').addEventListener('click', e => toggleTheme(e.currentTarget));
+
+  /* ---------- Language (Thai / English): remember the choice and reload the page in it ---------- */
+  const toggleLang = () => {
+    store('lang', SITE.lang === 'th' ? 'en' : 'th');
+    location.reload();
+  };
+  $('#lang-toggle').addEventListener('click', toggleLang);
 
   /* ---------- Mobile menu ---------- */
   const burger = $('#nav-burger');
@@ -104,7 +112,8 @@
     });
     el.classList.add('split');
   };
-  if (!reduceMotion) {
+  // Thai is written without spaces, so a split Thai heading could not wrap: only split English
+  if (!reduceMotion && SITE.lang !== 'th') {
     $$('.page-title, .section__head h2, .cta-band h2')
       .filter(el => !document.body.classList.contains('page-case') || !el.matches('.page-title'))
       .forEach(splitWords);
@@ -376,14 +385,15 @@
   const email = SITE.email;
   const copyText = async (text, done) => {
     try { await navigator.clipboard.writeText(text); showToast(done); }
-    catch (e) { showToast('Copy failed: select the text and copy it manually'); }
+    catch (e) { showToast(t('Copy failed: select the text and copy it manually', 'คัดลอกไม่สำเร็จ กรุณาเลือกข้อความแล้วคัดลอกเอง')); }
   };
-  const copyEmail = () => copyText(email, 'Email copied to clipboard');
+  const copyEmail = () => copyText(email, t('Email copied to clipboard', 'คัดลอกอีเมลแล้ว'));
   $$('.copy-btn').forEach(btn => btn.addEventListener('click', copyEmail));
   $$('.code__copy').forEach(btn => btn.addEventListener('click', () => {
-    copyText(btn.parentElement.querySelector('code').textContent, 'Script copied to clipboard');
-    btn.textContent = 'Copied';
-    setTimeout(() => { btn.textContent = 'Copy'; }, 1600);
+    copyText(btn.parentElement.querySelector('code').textContent, t('Script copied to clipboard', 'คัดลอกสคริปต์แล้ว'));
+    const label = btn.textContent;
+    btn.textContent = t('Copied', 'คัดลอกแล้ว');
+    setTimeout(() => { btn.textContent = label; }, 1600);
   }));
   $('#print-resume')?.addEventListener('click', () => window.print());
 
@@ -421,17 +431,19 @@
     theme: '<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/>',
     copy: '<rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/>',
     print: '<path d="M6 9V3h12v6M6 18H4v-7h16v7h-2M8 14h8v7H8z"/>',
+    lang: '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/>',
   };
   const here = (location.pathname.split('/').pop() || 'index.html') + (location.pathname.endsWith('project.html') ? location.hash : '');
   const go = href => () => { location.href = href; };
   const commands = [
     ...SITE.pages.filter(([href]) => href !== here)
-      .map(([href, label]) => ({ group: 'Pages', label, icon: 'go', run: go(href) })),
-    ...SITE.projects.map(p => [`project.html#${p.id}`, p.title]).filter(([href]) => href !== here)
-      .map(([href, label]) => ({ group: 'Projects', label, icon: 'go', run: go(href) })),
-    { group: 'Actions', label: 'Toggle light / dark theme', icon: 'theme', hint: 'T', run: toggleTheme },
-    { group: 'Actions', label: 'Copy email address', icon: 'copy', run: copyEmail },
-    { group: 'Actions', label: 'Open printable resume', icon: 'print', run: go('resume.html') },
+      .map(pg => ({ group: t('Pages', 'หน้า'), label: SITE.pageName(pg), icon: 'go', run: go(pg[0]) })),
+    ...SITE.projects.map(p => [`project.html#${p.id}`, SITE.tx(p, 'title')]).filter(([href]) => href !== here)
+      .map(([href, label]) => ({ group: t('Projects', 'ผลงาน'), label, icon: 'go', run: go(href) })),
+    { group: t('Actions', 'คำสั่ง'), label: t('Toggle light / dark theme', 'สลับโหมดสว่าง / มืด'), icon: 'theme', hint: 'T', run: toggleTheme },
+    { group: t('Actions', 'คำสั่ง'), label: t('อ่านเป็นภาษาไทย (Thai)', 'Read in English (อังกฤษ)'), icon: 'lang', run: toggleLang },
+    { group: t('Actions', 'คำสั่ง'), label: t('Copy email address', 'คัดลอกอีเมล'), icon: 'copy', run: copyEmail },
+    { group: t('Actions', 'คำสั่ง'), label: t('Open printable resume', 'เปิดเรซูเม่สำหรับพิมพ์'), icon: 'print', run: go('resume.html') },
   ];
   let visible = [], active = 0;
 
@@ -440,7 +452,7 @@
     visible = commands.filter(c => (c.group + ' ' + c.label).toLowerCase().includes(q));
     active = Math.min(active, Math.max(visible.length - 1, 0));
     list.innerHTML = '';
-    if (!visible.length) { list.innerHTML = '<li class="cmdk__empty">No results</li>'; return; }
+    if (!visible.length) { list.innerHTML = `<li class="cmdk__empty">${t('No results', 'ไม่พบผลลัพธ์')}</li>`; return; }
     let group = '';
     visible.forEach((c, i) => {
       if (c.group !== group) {
@@ -525,7 +537,7 @@
         const b = document.createElement('button');
         b.type = 'button';
         b.className = 'lb__thumb';
-        b.setAttribute('aria-label', `Show photo ${n + 1}: ${$('figcaption strong', s).textContent}`);
+        b.setAttribute('aria-label', `${t('Show photo', 'ดูรูปที่')} ${n + 1}: ${$('figcaption strong', s).textContent}`);
         b.append(media(s));
         b.addEventListener('click', () => show(n, n > index ? 1 : -1));
         return b;
@@ -555,7 +567,7 @@
   }
 
   /* ---------- Contact form → opens the visitor's email app ----------
-     ✏️ To use a form service (Formspree, etc.), set the form's action/method and remove this handler. */
+     EDIT: to use a form service (Formspree, etc.), set the form's action/method and remove this handler. */
   const form = $('#contact-form');
   const note = $('#form-note');
   form?.addEventListener('submit', e => {
@@ -566,12 +578,12 @@
       f.closest('.field').classList.toggle('has-error', !valid);
       if (!valid) ok = false;
     });
-    if (!ok) { note.textContent = 'Please fill in all fields with a valid email.'; return; }
+    if (!ok) { note.textContent = t('Please fill in all fields with a valid email.', 'กรุณากรอกข้อมูลให้ครบและใช้อีเมลที่ถูกต้อง'); return; }
     const d = new FormData(form);
     const subject = encodeURIComponent(`Portfolio enquiry from ${d.get('name')}`);
     const body = encodeURIComponent(`${d.get('message')}\n\n— ${d.get('name')} (${d.get('email')})`);
     location.href = `mailto:${email}?subject=${subject}&body=${body}`;
-    note.textContent = 'Opening your email app…';
+    note.textContent = t('Opening your email app…', 'กำลังเปิดแอปอีเมล…');
   });
 
   /* ---------- Footer year ---------- */

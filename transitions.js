@@ -1,5 +1,6 @@
 /* Loaded in <head> on every page, before anything paints.
-   - Applies the saved theme (no flash of the wrong theme).
+   - Applies the saved theme and language (no flash of the wrong one).
+     Language: the visitor's choice, else Thai for Thai browsers, else English.
    - Page-to-page transitions: slide left going forward through the menu order, right going back;
      a project card's picture and title morph into its case study (and back).
    - Browsers without cross-page View Transitions get a simple fade-out / fade-in instead. */
@@ -13,10 +14,13 @@
     return f === 'project.html' ? f + u.hash : f;
   };
 
-  // Saved theme (light unless the visitor chose dark)
+  // Saved theme (light unless the visitor chose dark) and language
+  let lang = '';
   try {
     const t = localStorage.getItem('theme'); if (t) root.dataset.theme = t;
+    lang = localStorage.getItem('lang');
   } catch (e) {}
+  root.lang = lang || ((navigator.languages || [navigator.language]).some(l => /^th\b/i.test(l)) ? 'th' : 'en');
 
   // Slide order = menu order from site.js, with every project right after Projects
   const order = () => {

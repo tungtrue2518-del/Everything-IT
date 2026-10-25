@@ -33,6 +33,14 @@ switches off for visitors who set "reduce motion" on their device.
 ## Make it yours
 - **Your name, initials, email and links:** edit them once at the top of `site.js`. The menu, footer and
   command menu on every page use them.
+- **Thai / English:** the EN | TH switch in the menu changes the language and remembers the choice.
+  First-time visitors get Thai if their browser is set to Thai, otherwise English.
+  - Page text: each English element carries its Thai version in `data-th="..."`
+    (for example `<h2 data-th="ผลงาน<em>เด่น</em>">Featured <em>projects</em></h2>`). When you change the English,
+    change the `data-th` next to it too. Form placeholders use `data-th-placeholder`, screen-reader labels `data-th-label`.
+  - Projects: each project in `site.js` has a `th: { ... }` block with the Thai text. Leave a field out and
+    the English is shown instead.
+  - Menu, buttons and messages built by the scripts use `SITE.t('English', 'ไทย')`.
 - **Text inside pages** (hero, about, resume, page titles) still has samples such as `Your City, Country` and `Company Name`.
   Use *Find and replace in files* in your editor (for example VS Code: `Ctrl+Shift+H`) for those.
 - **Photo:** in `about.html`, replace `<span>PL</span>` inside `.avatar` with `<img src="photo.jpg" alt="Purinat Lexuthai">`.
@@ -56,7 +64,7 @@ switches off for visitors who set "reduce motion" on their device.
 - **Contact form:** opens the visitor's email app. To receive messages directly, point the form at a
   service such as Formspree.
 
-Lines marked ✏️ in the HTML show where to edit.
+Comments marked `EDIT:` in the code show where to edit.
 
 ## Files
 - `*.html`: the pages (each holds only its own content)
